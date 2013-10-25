@@ -20,6 +20,7 @@ public class Debito implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private double valor;
 
     public Long getId() {
         return id;
