@@ -5,10 +5,13 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,6 +23,15 @@ public class Emprestimo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //TODO rever
+    @OneToOne
+    private Usuario usuario;
+    @OneToOne
+    private Obra obra;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dataEmprestimo;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dataDevolucao;
 
     public Long getId() {
         return id;

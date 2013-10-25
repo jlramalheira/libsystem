@@ -20,6 +20,8 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String categoria;
+    private boolean passivelEmprestimo;
 
     public Long getId() {
         return id;

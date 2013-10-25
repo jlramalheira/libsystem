@@ -5,10 +5,14 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,6 +24,14 @@ public class Reserva implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    //TODO ver se é isso mesmo
+    @ManyToOne
+    private Usuario usuario;
+    private int status;
+    @OneToOne
+    private Obra obra;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dia;
 
     public Long getId() {
         return id;
