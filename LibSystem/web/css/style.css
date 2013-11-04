@@ -1,0 +1,26 @@
+/* 
+    Document   : style
+    Created on : 04/11/2013, 19:14:09
+    Author     : Max Naegeler Roecker
+    Description:
+        CSS para estilizar as páginas do trabalho de PPIOO de 2013
+*/
+
+/*ESTRUTURAL -----------------------------------------------------------------*/
+body {
+    padding-top: 75px;
+}
+
+/*HEADER ---------------------------------------------------------------------*/
+header{
+    
+}
+
+/*ASIDE ----------------------------------------------------------------------*/
+aside .nav.nav-pills a{
+    color: #777;
+}
+aside .nav.nav-pills a:hover,
+aside .nav.nav-pills a:focus{
+    color: #333;
+}
