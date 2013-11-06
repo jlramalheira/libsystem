@@ -24,13 +24,12 @@ public class Reserva implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //TODO ver se é isso mesmo
     @ManyToOne
     private Usuario usuario;
     private int status;
-    @OneToOne
+    @ManyToOne
     private Obra obra;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dia;
 
     public Long getId() {
