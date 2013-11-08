@@ -14,10 +14,22 @@
         <%@include file="interfaceHeader.jsp" %>
 
         <div class="container">
-            <%@include file="interfaceMenuUsuario.jsp" %>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                <h1>Hello, world!</h1>
-            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="jumbotron">
+                        <h1>Hello, world!</h1>
+                        <p>
+                            O sistema Columbus&TRADE; permite uma completa manipulação e controle de bibliotecas ou acervos literários e artísticos.
+                        </p>
+                        <hr/>
+                        <a href="Usuario?op=login"
+                           class="btn btn-lg btn-default">
+                            Faça seu login
+                        </a>
+
+                    </div>
+                </div>
+            </div>            
         </div>
 
         <%@include file="interfaceFooter.jsp" %>
