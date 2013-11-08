@@ -15,14 +15,14 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Usuários</a></li>
-                <li><a href="#">Obras</a></li>
-                <li><a href="#">Empréstimos</a></li>
+                <li><a href="Usuario?op=list">Usuários</a></li>
+                <li><a href="Obras?op=list">Obras</a></li>
+                <li><a href="Emprestimos?op=list">Empréstimos</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Nome do Usuário</a></li>
-                <li><a href="#">Sair</a></li>
+                <li><a href="Usuario?op=view&id=#"><span class="glyphicon glyphicon-user"></span> Nome do Usuário</a></li>
+                <li><a href="Usuario?op=loggout">Sair</a></li>
 
             </ul>
         </div><!-- /.navbar-collapse -->

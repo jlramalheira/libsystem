@@ -1,8 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<aside class="col-lg-3 col-md-3 col-sm-3 col-xs-3 well">
-    <ul class="nav nav-pills nav-stacked">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Messages</a></li>
-    </ul>
+<aside class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+    <div class="list-group">
+        <div class="list-group-item">
+            <h4>Usuário</h4>
+        </div>
+        <a href="#" class="list-group-item">Cadastrar usuário</a>
+        <a href="#" class="list-group-item">Listar usuários</a>
+        <div class="list-group-item">
+            <h4>Perfil</h4>
+        </div>
+        <a href="#" class="list-group-item">Cadastrar perfis</a>
+        <a href="#" class="list-group-item">Listar perfis</a>
+    </div>
 </aside>
