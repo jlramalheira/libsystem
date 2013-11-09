@@ -5,7 +5,17 @@
     Description:
 --%>
 
+<%@page import="model.Usuario"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.DaoPerfil"%>
+<%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%  List<Perfil> perfis = new DaoPerfil().list();
+    Usuario usuario = (Usuario) request.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,9 +38,9 @@
                                 <label for="perfil">Perfil</label>
                                 <select name="perfil"
                                         id="perfil" class="form-control">
-                                    <option>Administrador</option>
-                                    <option>Bibliotecário</option>
-                                    <option>Aluno</option>
+                                    <%for (Perfil perfil : perfis) {%>
+                                    <option value="<%=perfil.getId()%>" <%=usuario.getPerfil().getId() == perfil.getId()? "selected=\"selected\"" : "" %>><%=perfil.getNome()%></option>
+                                    <% }%>
                                 </select>
                             </div>
                         </div>
@@ -41,7 +51,7 @@
                         <div class="row">
                             <div class="form-group col-lg-8">
                                 <label for="nome">Nome</label>
-                                <input type="text" name="nome" value=""
+                                <input type="text" name="nome" value="<%=usuario.getNome()%>"
                                        id="nome" class="form-control"
                                        placeholder="Seu nome completo"/>
                             </div>
@@ -50,7 +60,7 @@
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="email">E-mail</label>
-                                <input type="email" name="email" value=""
+                                <input type="email" name="email" value="<%=usuario.getEmail()%>"
                                        id="email" class="form-control"
                                        placeholder="E-mail para recuperação de senha"/>
                             </div>

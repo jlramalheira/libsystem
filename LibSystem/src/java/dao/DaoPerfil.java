@@ -4,6 +4,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Perfil;
 
 /**
@@ -14,6 +15,13 @@ public class DaoPerfil extends Dao<Perfil>{
 
     public DaoPerfil() {
         super(Perfil.class);
+    }
+    
+    public List<Perfil> listByNome(String nome){
+        criteria = newCriteria();
+        return criteria
+                .andStringLike("nome", "%"+nome+"%")
+                .getResultList();
     }
     
 }

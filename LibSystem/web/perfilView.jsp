@@ -4,7 +4,14 @@
     Author     : max
     Description:
 --%>
+<%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%Perfil perfil = (Perfil) request.getAttribute("perfil");
+    if (perfil == null) {
+        response.sendError(404);
+    }
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,8 +19,8 @@
     </head>
     <body>
         <%@include file="interfaceHeader.jsp" %>
-
         <div class="container">
+            <%@include file="interfaceMessages.jsp" %>
             <%@include file="interfaceMenuUsuario.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Visualizar Perfil</h1>                
@@ -22,14 +29,13 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <th>Nome</th>
-                                    <td>Data long data</td>
+                                    <th><%=perfil.getNome()%></th>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <a href="Perfil?op=update&id=#" 
+                        <a href="Perfil?op=update&idPerfil=<%=perfil.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Editar dados
                         </a>                  

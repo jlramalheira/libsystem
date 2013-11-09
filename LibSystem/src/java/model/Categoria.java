@@ -11,5 +11,6 @@ package model;
 public enum Categoria {
     
       livro, periodico, enciclopedia, midia, dicionario, mapa;
+
     
 }

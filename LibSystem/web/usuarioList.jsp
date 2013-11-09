@@ -5,7 +5,17 @@
     Description:
 --%>
 
+<%@page import="model.Usuario"%>
+<%@page import="java.util.List"%>
+<%@page import="dao.DaoPerfil"%>
+<%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%List<Perfil> perfis = new DaoPerfil().list();
+    List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
+    if (usuarios == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +29,7 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar usuários</h1>
 
-                <form method="post" action="Usuario" role="form">                        
+                <form method="get" action="Usuario" role="form">                        
                     <div class="row">
                         <div class="form-group col-lg-8">
                             <label for="nome">Nome</label>
@@ -34,9 +44,10 @@
                                 <label for="perfil">Perfil</label>
                                 <select name="perfil"
                                         id="perfil" class="form-control">
-                                    <option>Administrador</option>
-                                    <option>Bibliotecário</option>
-                                    <option>Aluno</option>
+                                    <option value="-1" selected="selected">Selecione</option>
+                                    <%for (Perfil perfil : perfis) {%>
+                                    <option value="<%=perfil.getId()%>"><%=perfil.getNome()%></option>
+                                    <% }%>
                                 </select>
                             </div>
                         </div>
@@ -57,6 +68,7 @@
                             class="btn btn-lg btn-default">Mais opções</button>
                 </form>
                 <hr/>
+                <% if (!usuarios.isEmpty()){ %>
                 <table data-rowlink class="table table-striped table-hover table-responsive">
                     <thead>
                         <tr>
@@ -65,29 +77,23 @@
                             <th>E-mail</th>
                     </thead>
                     <tbody>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
+                        <%for (Usuario usuario : usuarios){ %>
+                        <tr data-rowlink-href="Usuario?op=view&idUsuario=<%=usuario.getId()%>">
+                            <td><%=usuario.getId()%></td>
+                            <td><%=usuario.getNome()%></td>
+                            <td><%=usuario.getEmail()%></td>
                         </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
+                        <% }%>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3">3 resultados encontrados</th>
+                            <th colspan="3"><%=usuarios.size() == 1 ? "1 resultado encontrado" : usuarios.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>
-
+                <%} else {%>
+                <h3>Nenhum usuário encontrado!</h3>
+                <%}%>
             </div>
         </div>
 
