@@ -45,9 +45,12 @@
                                 <label for="categoria">Categoria</label>
                                 <select name="categoria"
                                         id="categoria" class="form-control">
-                                    <option>Mídia</option>
-                                    <option>Livro</option>
-                                    <option>Periódico</option>
+                                    <option value="midia">Mídia</option>
+                                    <option value="livro">Livro</option>
+                                    <option value="periodico">Periódico</option>
+                                    <option value="enciclopedia">Periódico</option>
+                                    <option value="dicionario">Periódico</option>
+                                    <option value="mapa">Periódico</option>
                                 </select>
                             </div>
                         </div>

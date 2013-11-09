@@ -21,7 +21,7 @@ import util.Message;
  *
  * @author joao
  */
-@WebServlet(name = "emprestimo", urlPatterns = {"/emprestimo"})
+@WebServlet(name = "Emprestimo", urlPatterns = {"/Emprestimo"})
 public class ServletEmprestimo extends HttpServlet {
     
     private ArrayList<Message> messages;
@@ -33,7 +33,7 @@ public class ServletEmprestimo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        action = request.getParameter("action");
+        action = request.getParameter("op");
         if (action == null) {
             response.sendError(404);
         } else {
@@ -55,7 +55,7 @@ public class ServletEmprestimo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        action = request.getParameter("action");
+        action = request.getParameter("op");
         if (action == null) {
             response.sendError(404);
         } else {

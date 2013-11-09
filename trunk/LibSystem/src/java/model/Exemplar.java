@@ -32,6 +32,14 @@ public class Exemplar implements Serializable {
         this.id = id;
     }
 
+    public Obra getObra() {
+        return obra;
+    }
+
+    public void setObra(Obra obra) {
+        this.obra = obra;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

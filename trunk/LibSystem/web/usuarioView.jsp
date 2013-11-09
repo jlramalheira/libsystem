@@ -5,7 +5,13 @@
     Description:
 --%>
 
+<%@page import="model.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%Usuario usuario = (Usuario) request.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,21 +30,21 @@
                             <tbody>
                                 <tr>
                                     <th>Nome</th>
-                                    <td>Nome do Usuário</td>
+                                    <td><%=usuario.getNome()%></td>
                                 </tr>
                                 <tr>
                                     <th>Email</th>
-                                    <td>email@email.com</td>
+                                    <td><%=usuario.getEmail()%></td>
                                 </tr>
                                 <tr>
                                     <th>Perfil</th>
-                                    <td>Administrador</td>
+                                    <td><%=usuario.getPerfil().getNome()%></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <a href="Usuario?op=update&id=#" 
+                        <a href="Usuario?op=update&idUsuario=<%=usuario.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Editar dados
                         </a>                  

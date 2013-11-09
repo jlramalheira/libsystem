@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
  *
@@ -17,15 +16,15 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Obra implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String autor;
-    private String ano;
+    private int ano;
     private String editora;
-    @ManyToOne
     private Categoria categoria;
 
     public Long getId() {
@@ -34,6 +33,66 @@ public class Obra implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public String getEditora() {
+        return editora;
+    }
+
+    public void setEditora(String editora) {
+        this.editora = editora;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        switch (categoria) {
+            case "livro":
+                this.categoria = Categoria.livro;
+                break;
+            case "periodico":
+                this.categoria = Categoria.periodico;
+                break;
+            case "enciclopedia":
+                this.categoria = Categoria.enciclopedia;
+                break;
+            case "midia":
+                this.categoria = Categoria.midia;
+                break;
+            case "dicionario":
+                this.categoria = Categoria.dicionario;
+                break;
+            case "mapa":
+                this.categoria = Categoria.mapa;
+                break;
+        }
+
     }
 
     @Override
@@ -60,5 +119,4 @@ public class Obra implements Serializable {
     public String toString() {
         return "model.Obra[ id=" + id + " ]";
     }
-    
 }

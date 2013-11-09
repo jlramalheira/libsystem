@@ -4,7 +4,11 @@
     Author     : max
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="dao.DaoPerfil"%>
+<%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% List<Perfil> perfis = new DaoPerfil().list();%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -44,9 +48,9 @@
                                 <label for="perfil">Perfil</label>
                                 <select name="perfil"
                                         id="perfil" class="form-control">
-                                    <option>Administrador</option>
-                                    <option>Bibliotecário</option>
-                                    <option>Aluno</option>
+                                    <%for (Perfil perfil : perfis) {%>
+                                        <option value="<%=perfil.getId()%>"><%=perfil.getNome()%></option>
+                                    <% }%>
                                 </select>
                             </div>
                         </div>

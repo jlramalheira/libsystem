@@ -9,6 +9,7 @@ import dao.DaoUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,68 +19,152 @@ import javax.servlet.http.HttpServletResponse;
 import model.Perfil;
 import model.Usuario;
 import util.Message;
+import util.Util;
 
 /**
  *
  * @author joao
  */
-@WebServlet(name = "usuario", urlPatterns = {"/usuario"})
+@WebServlet(name = "Usuario", urlPatterns = {"/Usuario"})
 public class ServletUsuario extends HttpServlet {
-    
+
     private DaoUsuario daoUsuario;
     private Usuario usuario;
     private ArrayList<Message> messages;
     private RequestDispatcher dispatcher;
     private String action;
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        action = request.getParameter("action");
+        request.setCharacterEncoding("utf-8");
+        action = request.getParameter("op");
+        daoUsuario = new DaoUsuario();
+        messages = new ArrayList<>();
+        if (action == null) {
+            response.sendError(404);
+        } else {
+            Long idUsuario;
+            switch (action) {
+                case "create":
+                    dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+                case "update":
+                    idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                    usuario = daoUsuario.get(idUsuario);
+
+                    if (usuario == null) {
+                        response.sendError(404);
+                    } else {
+                        request.setAttribute("usuario", usuario);
+
+                        dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                    break;
+                case "delete":
+                    break;
+                case "view":
+                    idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                    usuario = daoUsuario.get(idUsuario);
+
+                    if (usuario == null) {
+                        response.sendError(404);
+                    } else {
+                        if (request.getParameter("new") != null) {
+                            messages.add(new Message("Usuário cadastrado com sucesso!", Message.TYPE_SUCCESS));
+                        } else if (request.getParameter("update") != null) {
+                            messages.add(new Message("Usuário editado com sucesso!", Message.TYPE_SUCCESS));
+                        }
+
+                        request.setAttribute("usuario", usuario);
+                        request.setAttribute("messages", messages);
+
+                        dispatcher = request.getRequestDispatcher("usuarioView.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                    break;
+                case "search":
+                    String nome = request.getParameter("nome");
+                    String email = request.getParameter("email");
+                    Long idPerfil = Long.parseLong(request.getParameter("perfil"));
+                    List<Usuario> usuariosSearch;
+                    
+                    if (idPerfil == -1){
+                        usuariosSearch = daoUsuario.listByNomeEmail(nome,email);
+                    } else {
+                        Perfil perfil = new DaoPerfil().get(idPerfil);
+                        usuariosSearch = daoUsuario.listByNomeEmailPerfil(nome,email,perfil);
+                    }                    
+                    
+                    request.setAttribute("usuarios", usuariosSearch);
+                    
+                    dispatcher = request.getRequestDispatcher("usuarioList.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+                case "list":
+                    List<Usuario> usuarios = daoUsuario.list();
+                    
+                    request.setAttribute("usuarios", usuarios);
+                    
+                    dispatcher = request.getRequestDispatcher("usuarioList.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+                default:
+                    response.sendError(404);
+            }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        action = request.getParameter("op");
+        daoUsuario = new DaoUsuario();
+        messages = new ArrayList<>();
         if (action == null) {
             response.sendError(404);
         } else {
             switch (action) {
                 case "create":
-                    break;
-                case "update":
-                    break;
-                case "delete":
-                    break;
-                case "view":
-                    break;
-                default:
-                    response.sendError(404);
-            }
-        }        
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        action = request.getParameter("action");
-        if (action == null) {
-            response.sendError(404);
-        } else {
-            switch (action) {
-                case "create":                    
                     usuario = new Usuario();
-                    try{
-                        Long idPerfil = Long.parseLong(request.getParameter(""));
+                    try {
+                        Long idPerfil = Long.parseLong(request.getParameter("perfil"));
                         Perfil perfil = new DaoPerfil().get(idPerfil);
-                        if (perfil == null){
+
+                        if (perfil == null) {
                             throw new Exception();
                         }
-                        
-                        usuario.setLogin(request.getParameter(""));
-                        usuario.setEmail(request.getParameter(""));
-                        usuario.setNome(request.getParameter(""));
-                        usuario.setSenha(request.getParameter(""));
-                        
-                        daoUsuario.insert(usuario);
-                        
-                        response.sendRedirect("usuario?action=view&new=true");
-                    } catch (Exception ex){
+
+                        String login = request.getParameter("usuario");
+                        String email = request.getParameter("email");
+
+                        List<Usuario> usuarios = daoUsuario.listByLoginOrEmail(login, email);
+
+                        if (usuarios.isEmpty()) {
+                            usuario.setLogin(login);
+                            usuario.setEmail(email);
+                            usuario.setNome(request.getParameter("nome"));
+                            usuario.setSenha(Util.criptografarSenha(request.getParameter("senha")));
+                            usuario.setPerfil(perfil);
+
+                            daoUsuario.insert(usuario);
+
+                            response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
+                        } else {
+                            //TODO tratar erro
+                            messages.add(new Message("Login ou email já cadastrados", Message.TYPE_ERROR));
+
+                            request.setAttribute("messages", messages);
+                            dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                            dispatcher.forward(request, response);
+                        }
+
+                    } catch (Exception ex) {
                         //TODO ver se tem outro erro possivel
                         response.sendError(404);
                     }
@@ -93,7 +178,7 @@ public class ServletUsuario extends HttpServlet {
             }
         }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

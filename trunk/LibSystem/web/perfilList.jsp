@@ -5,7 +5,14 @@
     Description:
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%List<Perfil> perfis = (List<Perfil>) request.getAttribute("perfis");
+    if (perfis == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +26,7 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar Perfis</h1>
 
-                <form method="post" action="Perfil" role="form">                        
+                <form method="get" action="Perfil" role="form">                        
                     <div class="row">
                         <div class="form-group col-lg-6">
                             <label for="nome">Nome</label>
@@ -28,10 +35,11 @@
                                    placeholder="Nomenclatura do perfil"/>
                         </div>
                     </div>
-                    <button type="submit" name="" value=""
+                    <button type="submit" name="op" value="search"
                             class="btn btn-lg btn-default">Pesquisar</button>
                 </form>
                 <hr/>
+                <%if (!perfis.isEmpty()) {%>
                 <table data-rowlink class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -39,26 +47,22 @@
                             <th>Nome</th>
                     </thead>
                     <tbody>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>Data</td>
+                        <% for (Perfil perfil : perfis) {%>
+                        <tr data-rowlink-href="Perfil?op=view&idPerfil=<%=perfil.getId()%>">
+                            <td><%=perfil.getId()%></td>
+                            <td><%=perfil.getNome()%></td>
                         </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>Data</td>
-                        </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>Data</td>
-                        </tr>
+                        <%}%>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="2">3 resultados encontrados</th>
+                            <th colspan="2"><%=perfis.size() == 1 ? "1 resultado encontrado" : perfis.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>
-
+                <% } else {%>
+                <h3>Nenhum perfil encontrado!</h3>
+                <%}%>
             </div>
         </div>
 
