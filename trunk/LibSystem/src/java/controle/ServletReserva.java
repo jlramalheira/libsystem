@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Obra;
 import model.Reserva;
 import model.Usuario;
@@ -68,10 +69,12 @@ public class ServletReserva extends HttpServlet {
         daoReserva = new DaoReserva();
         messages = new ArrayList<>();
 
-        if (action == null) {
+        HttpSession session = request.getSession(true);
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (action == null || usuario == null) {
             response.sendError(404);
         } else {
-            Usuario usuario = null;
             switch (action) {
                 case "create":
                     reserva = new Reserva();

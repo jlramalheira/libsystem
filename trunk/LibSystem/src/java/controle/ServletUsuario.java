@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Perfil;
 import model.Usuario;
-import Email.Email;
+import email.Email;
+import javax.servlet.http.HttpSession;
 import util.Message;
 import util.Util;
 
@@ -130,6 +131,9 @@ public class ServletUsuario extends HttpServlet {
         action = request.getParameter("op");
         daoUsuario = new DaoUsuario();
         messages = new ArrayList<>();
+        
+        HttpSession session = request.getSession(true);
+        
         if (action == null) {
             response.sendError(404);
         } else {
@@ -161,9 +165,9 @@ public class ServletUsuario extends HttpServlet {
                                 usuario.setPerfil(perfil);
 
                                 daoUsuario.insert(usuario);
-                                
+
                                 Email.sendEmail(email, "Bem-vindo ao Columbus",
-                                        "Olá "+usuario.getNome() +"\n\n"
+                                        "Olá " + usuario.getNome() + "\n\n"
                                         + "Seu cadastro foi efetuado com sucesso!\n\n"
                                         + "Atenciosamente,\nColumbus");
 
@@ -229,6 +233,27 @@ public class ServletUsuario extends HttpServlet {
                     break;
                 case "delete":
 
+                    break;
+                case "login":
+                    usuario = daoUsuario.getByLogin(request.getParameter(""));
+
+                    if (usuario != null) {
+                        if (usuario.getSenha().equals(Util.criptografarSenha(request.getParameter("")))) {
+                            session.setAttribute("usuario", usuario);
+                        } else {
+                            messages.add(new Message("Senha inválida!", Message.TYPE_ERROR));
+
+                            request.setAttribute("messages", messages);
+                            dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                    } else {
+                        messages.add(new Message("Login inválido!", Message.TYPE_ERROR));
+
+                        request.setAttribute("messages", messages);
+                        dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                        dispatcher.forward(request, response);
+                    }
                     break;
                 default:
                     response.sendError(404);
