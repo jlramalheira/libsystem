@@ -33,6 +33,20 @@ public class DaoUsuario extends Dao<Usuario>{
                 .getResultList();
     }
     
+    public List<Usuario> listByEmail(String email){
+        criteria = newCriteria();
+        return criteria
+                .andStringLike("email", email)
+                .getResultList();
+    }
+    
+    public List<Usuario> listByLogin(String login){
+        criteria = newCriteria();
+        return criteria
+                .andStringLike("login", login)
+                .getResultList();
+    }
+    
     public List<Usuario> listByNomeEmail(String nome, String email){
         criteria = newCriteria();
         return criteria

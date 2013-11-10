@@ -21,7 +21,8 @@ public class Perfil implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    //privilégios?
+    private int diasDeReserva;
+    private int quantidadeReservas;
 
     public Long getId() {
         return id;
@@ -37,6 +38,22 @@ public class Perfil implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getDiasDeReserva() {
+        return diasDeReserva;
+    }
+
+    public void setDiasDeReserva(int diasDeReserva) {
+        this.diasDeReserva = diasDeReserva;
+    }
+
+    public int getQuantidadeReservas() {
+        return quantidadeReservas;
+    }
+
+    public void setQuantidadeReservas(int quantidadeReservas) {
+        this.quantidadeReservas = quantidadeReservas;
     }
 
     @Override

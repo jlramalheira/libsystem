@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Perfil;
 import model.Usuario;
+import Email.Email;
 import util.Message;
 import util.Util;
 
@@ -92,27 +93,30 @@ public class ServletUsuario extends HttpServlet {
                     String email = request.getParameter("email");
                     Long idPerfil = Long.parseLong(request.getParameter("perfil"));
                     List<Usuario> usuariosSearch;
-                    
-                    if (idPerfil == -1){
-                        usuariosSearch = daoUsuario.listByNomeEmail(nome,email);
+
+                    if (idPerfil == -1) {
+                        usuariosSearch = daoUsuario.listByNomeEmail(nome, email);
                     } else {
                         Perfil perfil = new DaoPerfil().get(idPerfil);
-                        usuariosSearch = daoUsuario.listByNomeEmailPerfil(nome,email,perfil);
-                    }                    
-                    
+                        usuariosSearch = daoUsuario.listByNomeEmailPerfil(nome, email, perfil);
+                    }
+
                     request.setAttribute("usuarios", usuariosSearch);
-                    
+
                     dispatcher = request.getRequestDispatcher("usuarioList.jsp");
                     dispatcher.forward(request, response);
                     break;
                 case "list":
                     List<Usuario> usuarios = daoUsuario.list();
-                    
+
                     request.setAttribute("usuarios", usuarios);
-                    
+
                     dispatcher = request.getRequestDispatcher("usuarioList.jsp");
                     dispatcher.forward(request, response);
                     break;
+                case "login":
+                    dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
+                    dispatcher.forward(request, response);
                 default:
                     response.sendError(404);
             }
@@ -129,6 +133,7 @@ public class ServletUsuario extends HttpServlet {
         if (action == null) {
             response.sendError(404);
         } else {
+            Long idUsuario;
             switch (action) {
                 case "create":
                     usuario = new Usuario();
@@ -143,21 +148,36 @@ public class ServletUsuario extends HttpServlet {
                         String login = request.getParameter("usuario");
                         String email = request.getParameter("email");
 
-                        List<Usuario> usuarios = daoUsuario.listByLoginOrEmail(login, email);
+                        List<Usuario> usuarios = daoUsuario.listByEmail(email);
 
                         if (usuarios.isEmpty()) {
-                            usuario.setLogin(login);
-                            usuario.setEmail(email);
-                            usuario.setNome(request.getParameter("nome"));
-                            usuario.setSenha(Util.criptografarSenha(request.getParameter("senha")));
-                            usuario.setPerfil(perfil);
+                            usuarios = daoUsuario.listByLogin(login);
 
-                            daoUsuario.insert(usuario);
+                            if (usuarios.isEmpty()) {
+                                usuario.setLogin(login);
+                                usuario.setEmail(email);
+                                usuario.setNome(request.getParameter("nome"));
+                                usuario.setSenha(Util.criptografarSenha(request.getParameter("senha")));
+                                usuario.setPerfil(perfil);
 
-                            response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
+                                daoUsuario.insert(usuario);
+                                
+                                Email.sendEmail(email, "Bem-vindo ao Columbus",
+                                        "Olá "+usuario.getNome() +"\n\n"
+                                        + "Seu cadastro foi efetuado com sucesso!\n\n"
+                                        + "Atenciosamente,\nColumbus");
+
+                                response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
+                            } else {
+                                messages.add(new Message("Login já cadastrado", Message.TYPE_ERROR));
+
+                                request.setAttribute("messages", messages);
+                                dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                                dispatcher.forward(request, response);
+                            }
                         } else {
                             //TODO tratar erro
-                            messages.add(new Message("Login ou email já cadastrados", Message.TYPE_ERROR));
+                            messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
 
                             request.setAttribute("messages", messages);
                             dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
@@ -170,8 +190,45 @@ public class ServletUsuario extends HttpServlet {
                     }
                     break;
                 case "update":
+                    idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                    usuario = daoUsuario.get(idUsuario);
+
+                    if (usuario == null) {
+                        response.sendError(404);
+                    } else {
+                        Long idPerfil = Long.parseLong(request.getParameter("perfil"));
+                        Perfil perfil = new DaoPerfil().get(idPerfil);
+
+                        if (perfil == null) {
+                            response.sendError(404);
+                        } else {
+
+                            String email = request.getParameter("email");
+
+                            List<Usuario> usuarios = daoUsuario.listByEmail(email);
+
+                            if (usuarios.isEmpty()) {
+                                usuario.setEmail(email);
+                                usuario.setNome(request.getParameter("nome"));
+                                usuario.setPerfil(perfil);
+
+                                daoUsuario.update(usuario);
+
+                                response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                            } else {
+                                //TODO tratar erro
+                                messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+
+                                request.setAttribute("messages", messages);
+                                dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                                dispatcher.forward(request, response);
+                            }
+                        }
+                    }
                     break;
                 case "delete":
+
                     break;
                 default:
                     response.sendError(404);

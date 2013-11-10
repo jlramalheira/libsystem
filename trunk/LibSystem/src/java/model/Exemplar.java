@@ -17,12 +17,18 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Exemplar implements Serializable {
+    
+    public static final int EMPRESTADO = 0;
+    public static final int RESERVADO = 1;
+    public static final int DISPONIVEL = 2;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Obra obra;
+    private int status;
 
     public Long getId() {
         return id;
@@ -38,6 +44,14 @@ public class Exemplar implements Serializable {
 
     public void setObra(Obra obra) {
         this.obra = obra;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

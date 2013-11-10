@@ -4,7 +4,9 @@
  */
 package model;
 
+import dao.DaoReserva;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -77,6 +79,14 @@ public class Usuario implements Serializable {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+    
+    public boolean canReservar(){
+        List<Reserva> reservas = new DaoReserva().listByUsuario(this);
+        if (reservas.size() < this.perfil.getQuantidadeReservas()){
+            return true;
+        }
+        return false;        
     }
 
     @Override

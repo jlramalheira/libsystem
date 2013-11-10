@@ -4,7 +4,9 @@
  */
 package model;
 
+import dao.DaoExemplar;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -93,6 +95,11 @@ public class Obra implements Serializable {
                 break;
         }
 
+    }
+    
+    public boolean hasDisponivel(){
+        List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.DISPONIVEL);
+        return exemplares.isEmpty();
     }
 
     @Override

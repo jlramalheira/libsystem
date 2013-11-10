@@ -7,15 +7,14 @@ package controle;
 import dao.DaoExemplar;
 import dao.DaoObra;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Categoria;
 import model.Exemplar;
 import model.Obra;
 import util.Message;
@@ -75,8 +74,20 @@ public class ServletObra extends HttpServlet {
                     }
                     break;
                 case "search":
+                    List<Obra> obrasSearch = daoObra.list();
+                    
+                    request.setAttribute("obras", obrasSearch);
+                    
+                    dispatcher = request.getRequestDispatcher("obraList.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 case "list":
+                    List<Obra> obras = daoObra.list();
+                    
+                    request.setAttribute("obras", obras);
+                    
+                    dispatcher = request.getRequestDispatcher("obraList.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 default:
                     response.sendError(404);
@@ -108,6 +119,7 @@ public class ServletObra extends HttpServlet {
 
                     Exemplar exemplar = new Exemplar();
                     exemplar.setObra(obra);
+                    exemplar.setStatus(Exemplar.DISPONIVEL);
                     DaoExemplar daoExemplar = new DaoExemplar();
 
                     for (int i = 0; i < numeroExemplares; i++) {
