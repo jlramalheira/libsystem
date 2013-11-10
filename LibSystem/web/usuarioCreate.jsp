@@ -18,6 +18,7 @@
         <%@include file="interfaceHeader.jsp" %>
 
         <div class="container">
+            <%@include file="interfaceMessages.jsp" %>
             <%@include file="interfaceMenuUsuario.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar usuário</h1>

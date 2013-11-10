@@ -4,7 +4,9 @@
  */
 package dao;
 
+import java.util.List;
 import model.Exemplar;
+import model.Obra;
 
 /**
  *
@@ -16,4 +18,18 @@ public class DaoExemplar extends Dao<Exemplar>{
         super(Exemplar.class);
     }
     
+    public List<Exemplar> listByObra(Obra obra){
+        criteria = newCriteria();
+        return criteria
+                .andEquals("obra", obra)
+                .getResultList();
+    }
+    
+    public List<Exemplar> listByObraAndStatus(Obra obra, int status){
+        criteria = newCriteria();
+        return criteria
+                .andEquals("obra", obra)
+                .andEquals("status", status)
+                .getResultList();
+    }
 }

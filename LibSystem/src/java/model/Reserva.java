@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -20,6 +19,12 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Reserva implements Serializable {
+    
+    public static final int CANCELADA = 0;
+    public static final int EMESPERA = 1;
+    public static final int EFETUADA = 2;
+    
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +35,9 @@ public class Reserva implements Serializable {
     @ManyToOne
     private Obra obra;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dia;
+    private Date diaReserva;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date diaDisponivel;
 
     public Long getId() {
         return id;
@@ -38,6 +45,46 @@ public class Reserva implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Obra getObra() {
+        return obra;
+    }
+
+    public void setObra(Obra obra) {
+        this.obra = obra;
+    }
+
+    public Date getDiaReserva() {
+        return diaReserva;
+    }
+
+    public void setDiaReserva(Date diaReserva) {
+        this.diaReserva = diaReserva;
+    }
+
+    public Date getDiaDisponivel() {
+        return diaDisponivel;
+    }
+
+    public void setDiaDisponivel(Date diaDisponivel) {
+        this.diaDisponivel = diaDisponivel;
     }
 
     @Override

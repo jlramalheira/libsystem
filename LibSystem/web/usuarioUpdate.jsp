@@ -30,6 +30,7 @@
                 <h1>Atualizar usuário</h1>
 
                 <form method="post" action="Usuario" role="form">
+                    <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>" />
                     <fieldset>
                         <legend>Informações do sistema</legend>
 
