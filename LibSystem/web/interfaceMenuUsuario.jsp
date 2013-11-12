@@ -4,12 +4,12 @@
         <div class="list-group-item">
             <h4>Usuário</h4>
         </div>
-        <a href="#" class="list-group-item">Cadastrar usuário</a>
-        <a href="#" class="list-group-item">Listar usuários</a>
+        <a href="Usuario?op=create" class="list-group-item">Cadastrar usuário</a>
+        <a href="Usuario?op=list" class="list-group-item">Listar usuários</a>
         <div class="list-group-item">
             <h4>Perfil</h4>
         </div>
-        <a href="#" class="list-group-item">Cadastrar perfis</a>
-        <a href="#" class="list-group-item">Listar perfis</a>
+        <a href="Perfil?op=create" class="list-group-item">Cadastrar perfis</a>
+        <a href="Perfil?op=list" class="list-group-item">Listar perfis</a>
     </div>
 </aside>

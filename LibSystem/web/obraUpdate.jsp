@@ -1,6 +1,6 @@
 <%-- 
-    Document   : obraCreate
-    Created on : 08/11/2013, 19:06:32
+    Document   : obraUpdate
+    Created on : 12/11/2013, 08:50:55
     Author     : max
     Description:
 --%>
@@ -17,7 +17,7 @@
         <div class="container">
             <%@include file="interfaceMenuObra.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                <h1>Cadastrar Obra</h1>
+                <h1>Atualizar Obra</h1>
 
                 <form method="post" action="Obra" role="form">
                     <fieldset>
@@ -54,8 +54,8 @@
 
                     </fieldset>
                     <hr/>
-                    <button type="submit" name="op" value="create"
-                            class="btn btn-lg btn-default">Cadastrar</button>
+                    <button type="submit" name="op" value="update"
+                            class="btn btn-lg btn-default">Atualizar</button>
                 </form>
 
             </div>
