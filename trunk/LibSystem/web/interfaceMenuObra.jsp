@@ -4,7 +4,7 @@
         <div class="list-group-item">
             <h4>Obras</h4>
         </div>
-        <a href="#" class="list-group-item">Cadastrar obra</a>
-        <a href="#" class="list-group-item">Listar obras</a>
+        <a href="Obra?op=create" class="list-group-item">Cadastrar obra</a>
+        <a href="Obra?op=list" class="list-group-item">Listar obras</a>
     </div>
 </aside>
