@@ -69,7 +69,7 @@
                     </fieldset>
                     <hr/>
                     <button type="submit" name="op" value="update"
-                            class="btn btn-lg btn-default">Atualizar</button>
+                            class="btn btn-lg btn-primary">Atualizar</button>
                 </form>
 
             </div>

@@ -55,7 +55,7 @@
                     </fieldset>
                     <hr/>
                     <button type="submit" name="op" value="create"
-                            class="btn btn-lg btn-default">Cadastrar</button>
+                            class="btn btn-lg btn-primary">Cadastrar</button>
                 </form>
 
             </div>
