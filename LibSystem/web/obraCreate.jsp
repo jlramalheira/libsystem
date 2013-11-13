@@ -33,6 +33,32 @@
                         </div>
                         
                         <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="autor">Autor</label>
+                                <input type="text" name="autor" value=""
+                                       id="autor" class="form-control"
+                                       placeholder="Autor da obra"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="editora">Editora</label>
+                                <input type="text" name="editora" value=""
+                                       id="autor" class="form-control"
+                                       placeholder="Editora da obra"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-3">
+                                <label for="ano">Ano</label>
+                                <input type="number" name="ano" min="1" value=""
+                                       id="ano" class="form-control"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="exemplares">Exemplares</label>
                                 <input type="number" name="exemplares" min="1" value="1"
@@ -47,7 +73,10 @@
                                         id="categoria" class="form-control">
                                     <option value="midia">Mídia</option>
                                     <option value="livro">Livro</option>
+                                    <option value="dicionario">Dicionario</option>
+                                    <option value="mapa">Mapa</option>
                                     <option value="periodico">Periódico</option>
+                                    <option value="enciclopedia">Enciclopédia</option>
                                 </select>
                             </div>
                         </div>

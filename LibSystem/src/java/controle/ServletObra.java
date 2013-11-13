@@ -75,17 +75,17 @@ public class ServletObra extends HttpServlet {
                     break;
                 case "search":
                     List<Obra> obrasSearch = daoObra.list();
-                    
+
                     request.setAttribute("obras", obrasSearch);
-                    
+
                     dispatcher = request.getRequestDispatcher("obraList.jsp");
                     dispatcher.forward(request, response);
                     break;
                 case "list":
                     List<Obra> obras = daoObra.list();
-                    
+
                     request.setAttribute("obras", obras);
-                    
+
                     dispatcher = request.getRequestDispatcher("obraList.jsp");
                     dispatcher.forward(request, response);
                     break;
@@ -109,13 +109,14 @@ public class ServletObra extends HttpServlet {
                 case "create":
                     obra = new Obra();
 
-                    obra.setAno(Integer.parseInt(request.getParameter("")));
-                    obra.setAutor(request.getParameter(""));
-                    obra.setCategoria(request.getParameter(""));
-                    obra.setEditora(request.getParameter(""));
-                    obra.setTitulo(request.getParameter(""));
+                    obra.setAno(Integer.parseInt(request.getParameter("ano")));
+                    obra.setAutor(request.getParameter("autor"));
+                    obra.setCategoria(request.getParameter("categoria"));
+                    obra.setEditora(request.getParameter("editora"));
+                    obra.setTitulo(request.getParameter("titulo"));
 
-                    int numeroExemplares = Integer.parseInt(request.getParameter(""));
+                    daoObra.insert(obra);
+                    int numeroExemplares = Integer.parseInt(request.getParameter("exemplares"));
 
                     Exemplar exemplar = new Exemplar();
                     exemplar.setObra(obra);
@@ -126,7 +127,6 @@ public class ServletObra extends HttpServlet {
                         daoExemplar.insert(exemplar);
                     }
 
-                    daoObra.insert(obra);
 
                     response.sendRedirect("Obra?op=view&new=true&idObra=" + obra.getId());
 
