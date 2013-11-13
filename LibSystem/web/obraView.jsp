@@ -4,7 +4,15 @@
     Author     : max
     Description:
 --%>
+<%@page import="model.Exemplar"%>
+<%@page import="model.Obra"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+Obra obra = (Obra) request.getAttribute("obra");
+if (obra == null){
+    response.sendError(404);
+}
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,29 +32,41 @@
                             <tbody>
                                 <tr>
                                     <th class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Nome</th>
-                                    <td>Data long data</td>
+                                    <td><%=obra.getTitulo()%></td>
+                                </tr>
+                                <tr>
+                                    <th>Autor</th>
+                                    <td><%=obra.getAutor()%></td>
+                                </tr>
+                                <tr>
+                                    <th>Ano</th>
+                                    <td><%=obra.getAno()%></td>
+                                </tr>
+                                <tr>
+                                    <th>Editora</th>
+                                    <td><%=obra.getEditora()%></td>
                                 </tr>
                                 <tr>
                                     <th>Categoria</th>
-                                    <td>Mídia</td>
+                                    <td><%=obra.getCategoria().valor()%></td>
                                 </tr>
                                 <tr>
-                                    <th>Exemplares totais</th>
-                                    <td>123</td>
+                                    <th>Exemplares</th>
+                                    <td><%=obra.getExemplares()%></td>
                                 </tr>
                                 <tr>
                                     <th>Exemplares disponíveis</th>
-                                    <td>123</td>
+                                    <td><%=obra.getExemplares(Exemplar.DISPONIVEL)%></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <a href="Obra?op=update&id=#" 
+                        <a href="Obra?op=update&idObra=<%=obra.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
                             Editar obra
                         </a>
-                        <a href="Obra?op=update&id=#" 
+                        <a href="Obra?op=update&idObra=<%=obra.getId()%>" 
                            class="btn btn-danger btn-block btn-lg">
                             Excluir obra
                         </a> 

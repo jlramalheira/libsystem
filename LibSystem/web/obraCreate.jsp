@@ -5,6 +5,7 @@
     Description:
 --%>
 
+<%@page import="model.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -31,7 +32,7 @@
                                        placeholder="Título da obra"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-8">
                                 <label for="autor">Autor</label>
@@ -40,7 +41,7 @@
                                        placeholder="Autor da obra"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="editora">Editora</label>
@@ -49,7 +50,7 @@
                                        placeholder="Editora da obra"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="ano">Ano</label>
@@ -57,7 +58,7 @@
                                        id="ano" class="form-control"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="exemplares">Exemplares</label>
@@ -65,18 +66,15 @@
                                        id="exemplares" class="form-control"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="categoria">Categoria</label>
                                 <select name="categoria"
                                         id="categoria" class="form-control">
-                                    <option value="midia">Mídia</option>
-                                    <option value="livro">Livro</option>
-                                    <option value="dicionario">Dicionario</option>
-                                    <option value="mapa">Mapa</option>
-                                    <option value="periodico">Periódico</option>
-                                    <option value="enciclopedia">Enciclopédia</option>
+                                    <%for (Categoria categoria : Categoria.values()) {%>
+                                    <option value="<%=categoria.name()%>"><%=categoria.valor()%></option>
+                                    <%}%>
                                 </select>
                             </div>
                         </div>
