@@ -23,7 +23,7 @@
                         </p>
                         <hr/>
                         <a href="Usuario?op=login"
-                           class="btn btn-lg btn-default">
+                           class="btn btn-lg btn-primary">
                             Faça seu login
                         </a>
 

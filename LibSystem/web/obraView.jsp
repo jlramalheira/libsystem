@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a href="Obra?op=update&id=#" 
-                           class="btn btn-default btn-block btn-lg">
+                           class="btn btn-primary btn-block btn-lg">
                             Editar obra
                         </a>                  
                     </div>

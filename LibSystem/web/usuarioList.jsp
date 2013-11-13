@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <button type="submit" name="op" value="search" 
-                            class="btn btn-lg btn-default">Pesquisar</button>
+                            class="btn btn-lg btn-primary">Pesquisar</button>
                     <button type="button" value="" 
                             data-searchfilter="toggle" 
                             data-searchfilter-target="#searchfilter-panel" 

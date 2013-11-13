@@ -1,6 +1,6 @@
 <%-- 
-    Document   : obraList
-    Created on : 12/11/2013, 08:47:01
+    Document   : emprestimoList
+    Created on : 12/11/2013, 10:46:37
     Author     : max
     Description:
 --%>
@@ -15,39 +15,53 @@
         <%@include file="interfaceHeader.jsp" %>
 
         <div class="container">
-            <%@include file="interfaceMenuObra.jsp" %>
+            <%@include file="interfaceMenuEmprestimo.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                <h1>Listar Obras</h1>
+                <h1>Listar empréstimos</h1>
 
                 <form method="post" action="" role="form">                        
                     <div class="row">
-                        <div class="form-group col-lg-6">
-                            <label for="titulo">Título</label>
-                            <input type="text" name="titulo" value=""
-                                   id="titulo" class="form-control"
-                                   placeholder="Título da obra"/>
+                        <div class="form-group col-lg-12">
+                            <label for="obra">Obra</label>
+                            <input type="obra" name="usuario" value=""
+                                   id="obra" class="form-control"
+                                   placeholder="Nome da obra"/>
                         </div>
                     </div>
                     <div id="searchfilter-panel" style="display: none;">
                         <div class="row">
-                            <div class="form-group col-lg-3">
-                                <label for="exemplares">Exemplares</label>
-                                <input type="number" name="exemplares" min="1" value="1"
-                                       id="exemplares" class="form-control"/>
+                            <div class="form-group col-lg-10">
+                                <label for="usuario">Usuário</label>
+                                <input type="text" name="usuario" value=""
+                                       id="usuario" class="form-control"
+                                       placeholder="Nome do usuário"/>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-lg-5">
-                                <label for="categoria">Categoria</label>
-                                <select name="categoria"
-                                        id="categoria" class="form-control">
-                                    <option value="midia">Mídia</option>
-                                    <option value="livro">Livro</option>
-                                    <option value="periodico">Periódico</option>
-                                </select>
+                                <label for="data-saida-inicio">Data de saída - Início</label>
+                                <input type="date" name="data-saida-inicio" value=""
+                                       id="data-saida-inicio" class="form-control"/>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <label for="data-saida-fim">Data de saída - Fim</label>
+                                <input type="date" name="data-saida-fim" value=""
+                                       id="data-saida-fim" class="form-control"/>
+                            </div>                            
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-5">
+                                <label for="data-devolucao-inicio">Data de devolução prevista</label>
+                                <input type="date" name="data-devolucao-inicio" value=""
+                                       id="data-devolucao-inicio" class="form-control"/>
                             </div>
                         </div>
+                        
+                        <fieldset>
+                            <legend>Pesquisar por devoluções</legend>
+                            
+                        </fieldset>
                     </div>
                     <button type="submit" name="op" value="search" 
                             class="btn btn-lg btn-primary">Pesquisar</button>
