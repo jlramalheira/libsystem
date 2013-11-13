@@ -25,9 +25,12 @@
                         <div class="row">
                             <div class="form-group col-lg-10">
                                 <label for="obra">Obra</label>
-                                <input type="text" name="obra" value=""
-                                       id="obra" class="form-control"
-                                       placeholder="Nome da obra"/>
+                                <select data-type="selectsearch">
+                                    <option>Memórias póstumas de Brás Cubas</option>
+                                    <option>Dom Casmurro</option>
+                                    <option>Moreninha</option>
+                                    <option>Enciclopedia Barsa Volume 1</option>
+                                </select>
                             </div>
                         </div>                        
                      </fieldset>

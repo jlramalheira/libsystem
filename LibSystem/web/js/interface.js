@@ -13,3 +13,10 @@ $('[data-rowlink] tbody tr[data-rowlink-href]').click(function(){
     document.location = href;
 });
 
+
+$(document).ready(function(){
+    $('select[data-type="selectsearch"]').select2({
+        placeholder: "Escolha uma opção"
+    });
+});
+
