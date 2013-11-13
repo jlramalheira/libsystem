@@ -4,12 +4,12 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Flip de navegação</span>
+                <span class="sr-only">Mostrar de navegação</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Columbus&TRADE;</a>
+            <a class="navbar-brand" href="/LibSystem">Columbus&TRADE;</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

@@ -22,7 +22,7 @@
             <%@include file="interfaceMenuUsuario.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar usuário</h1>
-
+                <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Usuario" role="form">
                     <fieldset>
                         <legend>Informações do sistema</legend>

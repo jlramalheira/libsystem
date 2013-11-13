@@ -16,7 +16,8 @@
         <div class="container">
             <%@include file="interfaceMenuObra.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                <h1>Visualizar Obra</h1>                
+                <h1>Visualizar Obra</h1>
+                <%@include file="interfaceMessages.jsp" %>
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <table class="table table-bordered">
@@ -44,7 +45,11 @@
                         <a href="Obra?op=update&id=#" 
                            class="btn btn-primary btn-block btn-lg">
                             Editar obra
-                        </a>                  
+                        </a>
+                        <a href="Obra?op=update&id=#" 
+                           class="btn btn-danger btn-block btn-lg">
+                            Excluir obra
+                        </a> 
                     </div>
                 </div>
 

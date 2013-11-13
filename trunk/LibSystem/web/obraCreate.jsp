@@ -18,13 +18,13 @@
             <%@include file="interfaceMenuObra.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar Obra</h1>
-
+                <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Obra" role="form">
                     <fieldset>
                         <legend>Informações da obra</legend>
 
                         <div class="row">
-                            <div class="form-group col-lg-6">
+                            <div class="form-group col-lg-10">
                                 <label for="titulo">Título</label>
                                 <input type="text" name="titulo" value=""
                                        id="titulo" class="form-control"
@@ -33,7 +33,7 @@
                         </div>
                         
                         <div class="row">
-                            <div class="form-group col-lg-6">
+                            <div class="form-group col-lg-8">
                                 <label for="autor">Autor</label>
                                 <input type="text" name="autor" value=""
                                        id="autor" class="form-control"
@@ -53,7 +53,7 @@
                         <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="ano">Ano</label>
-                                <input type="number" name="ano" min="1" value=""
+                                <input type="number" name="ano" min="0" value="2013"
                                        id="ano" class="form-control"/>
                             </div>
                         </div>

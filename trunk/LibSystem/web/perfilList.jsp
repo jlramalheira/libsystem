@@ -25,7 +25,7 @@
             <%@include file="interfaceMenuUsuario.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar Perfis</h1>
-
+                <%@include file="interfaceMessages.jsp" %>
                 <form method="get" action="Perfil" role="form">                        
                     <div class="row">
                         <div class="form-group col-lg-6">
