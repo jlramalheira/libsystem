@@ -16,8 +16,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="Usuario?op=list">Usuários</a></li>
-                <li><a href="Obras?op=list">Obras</a></li>
-                <li><a href="Emprestimos?op=list">Empréstimos</a></li>
+                <li><a href="Obra?op=list">Obras</a></li>
+                <li><a href="Emprestimo?op=list">Empréstimos</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

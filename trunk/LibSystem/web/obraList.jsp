@@ -30,10 +30,33 @@
                     </div>
                     <div id="searchfilter-panel" style="display: none;">
                         <div class="row">
+                            <div class="form-group col-lg-8">
+                                <label for="autor">Autor</label>
+                                <input type="text" name="autor" value=""
+                                       id="autor" class="form-control"
+                                       placeholder="Autor da obra"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="editora">Editora</label>
+                                <input type="text" name="editora" value=""
+                                       id="autor" class="form-control"
+                                       placeholder="Editora da obra"/>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="form-group col-lg-3">
-                                <label for="exemplares">Exemplares</label>
-                                <input type="number" name="exemplares" min="1" value="1"
-                                       id="exemplares" class="form-control"/>
+                                <label for="ano">Ano - Início</label>
+                                <input type="number" name="ano" min="0" value="2013"
+                                       id="ano" class="form-control"/>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="ano">Ano - Fim</label>
+                                <input type="number" name="ano" min="0" value="2013"
+                                       id="ano" class="form-control"/>
                             </div>
                         </div>
 

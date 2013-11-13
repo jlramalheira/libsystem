@@ -76,6 +76,10 @@
                            class="btn btn-default btn-block btn-lg">
                             Renovar empréstimo
                         </a>
+                        <a href="Emprestimo?op=receber&id=#" 
+                           class="btn btn-default btn-block btn-lg">
+                            Receber débito
+                        </a>
                     </div>
                 </div>
 
