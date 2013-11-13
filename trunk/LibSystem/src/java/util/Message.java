@@ -11,7 +11,7 @@ package util;
 public class Message {
 
     public static final String TYPE_ALERT = "alert";
-    public static final String TYPE_ERROR = "error";
+    public static final String TYPE_ERROR = "danger";
     public static final String TYPE_SUCCESS = "success";
     public static final String TYPE_INFO = "info";
     private String text;
