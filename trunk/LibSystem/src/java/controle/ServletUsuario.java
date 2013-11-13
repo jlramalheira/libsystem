@@ -131,9 +131,9 @@ public class ServletUsuario extends HttpServlet {
         action = request.getParameter("op");
         daoUsuario = new DaoUsuario();
         messages = new ArrayList<>();
-        
+
         HttpSession session = request.getSession(true);
-        
+
         if (action == null) {
             response.sendError(404);
         } else {
@@ -221,12 +221,22 @@ public class ServletUsuario extends HttpServlet {
 
                                 response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
                             } else {
-                                //TODO tratar erro
-                                messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+                                if (usuarios.get(0).getEmail().equals(email)) {
+                                    usuario.setEmail(email);
+                                    usuario.setNome(request.getParameter("nome"));
+                                    usuario.setPerfil(perfil);
 
-                                request.setAttribute("messages", messages);
-                                dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
-                                dispatcher.forward(request, response);
+                                    daoUsuario.update(usuario);
+
+                                    response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                                } else {
+                                    //TODO tratar erro
+                                    messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+
+                                    request.setAttribute("messages", messages);
+                                    dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
+                                    dispatcher.forward(request, response);
+                                }
                             }
                         }
                     }

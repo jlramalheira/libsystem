@@ -75,30 +75,43 @@ public class Obra implements Serializable {
 
     public void setCategoria(String categoria) {
         switch (categoria) {
-            case "livro":
-                this.categoria = Categoria.livro;
+            case "LIVRO":
+                this.categoria = Categoria.LIVRO;
                 break;
-            case "periodico":
-                this.categoria = Categoria.periodico;
+            case "PERIODICO":
+                this.categoria = Categoria.PERIODICO;
                 break;
-            case "enciclopedia":
-                this.categoria = Categoria.enciclopedia;
+            case "ENCICLOPEDIA":
+                this.categoria = Categoria.ENCICLOPEDIA;
                 break;
-            case "midia":
-                this.categoria = Categoria.midia;
+            case "MIDIA":
+                this.categoria = Categoria.MIDIA;
                 break;
-            case "dicionario":
-                this.categoria = Categoria.dicionario;
+            case "DICIONARIO":
+                this.categoria = Categoria.DICIONARIO;
                 break;
-            case "mapa":
-                this.categoria = Categoria.mapa;
+            case "MAPA":
+                this.categoria = Categoria.MAPA;
                 break;
         }
 
     }
     
+    public int getExemplares(){
+        return new DaoExemplar().getExemplares(this);
+    }
+    
+    public int getExemplares(int status){
+        return new DaoExemplar().getExemplaresByStatus(this,status);
+    }
+    
     public boolean hasDisponivel(){
         List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.DISPONIVEL);
+        return exemplares.isEmpty();
+    }
+    
+    public boolean hasEmprestado(){
+        List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.EMPRESTADO);
         return exemplares.isEmpty();
     }
 

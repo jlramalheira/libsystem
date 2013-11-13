@@ -25,6 +25,13 @@ public class DaoReserva extends Dao<Reserva> {
                 .andEquals("usuario", usuario)
                 .getResultList();
     }
+    
+    public List<Reserva> listByObra(Obra obra) {
+        criteria = newCriteria();
+        return criteria
+                .andEquals("obra", obra)
+                .getResultList();
+    }
 
     public List<Reserva> listByUsuarioObra(Usuario usuario, Obra obra) {
         criteria = newCriteria();
