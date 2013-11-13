@@ -54,11 +54,6 @@
                                 <input type="date" name="data-saida" value=""
                                        id="data-saida" class="form-control"/>
                             </div>
-                            <div class="form-group col-lg-5">
-                                <label for="data-devolucao">Data de devolução</label>
-                                <input type="date" name="data-devolucao" value=""
-                                       id="data-devolucao" class="form-control"/>
-                            </div>
                         </div>
                         
                      </fieldset>
