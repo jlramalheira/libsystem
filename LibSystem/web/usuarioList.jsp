@@ -35,7 +35,7 @@
                             <label for="nome">Nome</label>
                             <input type="text" name="nome" value=""
                                    id="nome" class="form-control"
-                                   placeholder="Seu nome completo"/>
+                                   placeholder="Digite um nome para pesquisar"/>
                         </div>
                     </div>
                     <div id="searchfilter-panel" style="display: none;">
@@ -56,7 +56,7 @@
                                 <label for="email">E-mail</label>
                                 <input type="email" name="email" value=""
                                        id="email" class="form-control"
-                                       placeholder="E-mail para recuperação de senha"/>
+                                       placeholder="E-mail de cadastro"/>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                 <table data-rowlink class="table table-striped table-hover table-responsive">
                     <thead>
                         <tr>
-                            <th class="col-">#</th>
+                            <th class="">#</th>
                             <th>Nome</th>
                             <th>E-mail</th>
                     </thead>
