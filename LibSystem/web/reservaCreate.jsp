@@ -5,7 +5,16 @@
     Description:
 --%>
 
+<%@page import="model.Obra"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%    
+    List<Obra> obras = (List<Obra>) request.getAttribute("obras");
+    if (obras == null) {
+        response.sendError(404);
+    }
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,25 +29,24 @@
                 <h1>Cadastrar Reserva</h1>
                 <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Reserva" role="form">
-                     <fieldset>
+                    <fieldset>
                         <legend>Informações da Obra</legend>
                         <div class="row">
                             <div class="form-group col-lg-10">
                                 <label for="obra">Obra</label>
                                 <select data-type="selectsearch">
-                                    <option>Memórias póstumas de Brás Cubas</option>
-                                    <option>Dom Casmurro</option>
-                                    <option>Moreninha</option>
-                                    <option>Enciclopedia Barsa Volume 1</option>
+                                    <%for (Obra obra : obras){%>
+                                    <option value="<%=obra.getId()%>"><%=obra.getTitulo()%></option>
+                                    <%}%>
                                 </select>
                             </div>
                         </div>                        
-                     </fieldset>
-                     <hr/>
-                     <button type="submit" name="op" value="create"
-                             class="btn btn-lg btn-primary">Cadastrar</button>
+                    </fieldset>
+                    <hr/>
+                    <button type="submit" name="op" value="create"
+                            class="btn btn-lg btn-primary">Cadastrar</button>
                 </form>
-                
+
             </div>
         </div>
 

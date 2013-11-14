@@ -4,7 +4,14 @@
     Author     : max
     Description:
 --%>
+<%@page import="model.Reserva"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+Reserva reserva = (Reserva) request.getAttribute("reserva");
+if (reserva == null){
+    response.sendError(404);
+}
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,16 +31,23 @@
                             <tbody>
                                 <tr>
                                     <th class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Obra</th>
-                                    <td>Nome da obra</td>
+                                    <td><%=reserva.getObra().getTitulo()%></td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
                                     <td>
+                                        <%switch(reserva.getStatus()){
+                                            case Reserva.AGUARDANDO: %>
                                         <span class="label label-default">Aguardando</span>
+                                        <% break; case Reserva.EFETUADA: %>
                                         <span class="label label-info">Efetuada</span>
+                                        <% break; case Reserva.DISPONIVEL: %>
                                         <span class="label label-success">Disponível</span>
+                                        <% break; case Reserva.EXPIRADA: %>
                                         <span class="label label-warning">Expirada</span>
+                                        <% break; case Reserva.CANCELADA: %>
                                         <span class="label label-danger">Cancelada</span>
+                                        <%}%>
                                     </td>
                                 </tr>
                                 <tr>

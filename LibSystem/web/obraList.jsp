@@ -5,7 +5,16 @@
     Description:
 --%>
 
+<%@page import="model.Categoria"%>
+<%@page import="model.Obra"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+List<Obra> obras = (List<Obra>) request.getAttribute("obras");
+if (obras == null){
+    response.sendError(404);
+}
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +28,7 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar Obras</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="" role="form">                        
+                <form method="get" action="Obra" role="form">                        
                     <div class="row">
                         <div class="form-group col-lg-6">
                             <label for="titulo">Título</label>
@@ -49,14 +58,14 @@
                         
                         <div class="row">
                             <div class="form-group col-lg-3">
-                                <label for="ano">Ano - Início</label>
-                                <input type="number" name="ano" min="0" value="2013"
-                                       id="ano" class="form-control"/>
+                                <label for="anoInicio">Ano - Início</label>
+                                <input type="number" name="anoInicio" min="0" value=""
+                                       id="anoInicio" class="form-control"/>
                             </div>
                             <div class="form-group col-lg-3">
-                                <label for="ano">Ano - Fim</label>
-                                <input type="number" name="ano" min="0" value="2013"
-                                       id="ano" class="form-control"/>
+                                <label for="anoFim">Ano - Fim</label>
+                                <input type="number" name="anoFim" min="0" value=""
+                                       id="anoFim" class="form-control"/>
                             </div>
                         </div>
 
@@ -65,9 +74,10 @@
                                 <label for="categoria">Categoria</label>
                                 <select name="categoria"
                                         id="categoria" class="form-control">
-                                    <option value="midia">Mídia</option>
-                                    <option value="livro">Livro</option>
-                                    <option value="periodico">Periódico</option>
+                                    <option value="">Selecione</option>
+                                    <%for (Categoria categoria : Categoria.values()) {%>
+                                    <option value="<%=categoria.name()%>"><%=categoria.valor()%></option>
+                                    <%}%>
                                 </select>
                             </div>
                         </div>
@@ -80,37 +90,36 @@
                             class="btn btn-lg btn-default">Mais opções</button>
                 </form>
                 <hr/>
+                <%if (!obras.isEmpty()){%>
                 <table data-rowlink class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>#ID</th>
-                            <th>Input</th>
-                            <th>Input</th>
+                            <th>Titulo</th>
+                            <th>Autor</th>
+                            <th>Categoria</th>
+                            <th>Exemplares</th>
                     </thead>
                     <tbody>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
+                        <%for (Obra obra : obras){ %>
+                        <tr data-rowlink-href="Obra?op=view&idObra=<%=obra.getId()%>">
+                            <td><%=obra.getId()%></td>
+                            <td><%=obra.getTitulo()%></td>
+                            <td><%=obra.getAutor()%></td>
+                            <td><%=obra.getCategoria().valor()%></td>
+                            <td><%=obra.getExemplares()%></td>
                         </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
+                        <%}%>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3">3 resultados encontrados</th>
+                            <th colspan="3"><%=obras.size() == 1 ? "1 resultado encontrado" : obras.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>
-
+                <%} else { %>
+                <h3>Nenhuma Obra encontrada!</h3>
+                <%}%>
             </div>
         </div>
 

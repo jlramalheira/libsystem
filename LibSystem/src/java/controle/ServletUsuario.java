@@ -7,7 +7,6 @@ package controle;
 import dao.DaoPerfil;
 import dao.DaoUsuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -118,6 +117,7 @@ public class ServletUsuario extends HttpServlet {
                 case "login":
                     dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
                     dispatcher.forward(request, response);
+                    break;
                 default:
                     response.sendError(404);
             }

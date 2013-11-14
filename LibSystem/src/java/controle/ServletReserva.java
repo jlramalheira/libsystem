@@ -46,14 +46,40 @@ public class ServletReserva extends HttpServlet {
         if (action == null) {
             response.sendError(404);
         } else {
+            Long idReserva;
             switch (action) {
                 case "create":
+                    List<Obra> obras = new DaoObra().listOderCategoria();
+
+                    request.setAttribute("obras", obras);
+
+                    dispatcher = request.getRequestDispatcher("reservaCreate.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 case "update":
                     break;
                 case "delete":
                     break;
                 case "view":
+                    idReserva = Long.parseLong(request.getParameter("idReserva"));
+
+                    reserva = daoReserva.get(idReserva);
+
+                    if (reserva == null) {
+                        response.sendError(404);
+                    } else {
+                        if (request.getParameter("new") != null) {
+                            messages.add(new Message("Obra cadastrada com sucesso!", Message.TYPE_SUCCESS));
+                        } else if (request.getParameter("update") != null) {
+                            messages.add(new Message("Obra editada com sucesso!", Message.TYPE_SUCCESS));
+                        }
+
+                        request.setAttribute("reserva", reserva);
+                        request.setAttribute("messages", messages);
+
+                        dispatcher = request.getRequestDispatcher("obraView.jsp");
+                        dispatcher.forward(request, response);
+                    }
                     break;
                 default:
                     response.sendError(404);
@@ -79,27 +105,27 @@ public class ServletReserva extends HttpServlet {
                 case "create":
                     reserva = new Reserva();
 
-                    Long idObra = Long.parseLong(request.getParameter("idObra"));
+                    Long idObra = Long.parseLong(request.getParameter("obra"));
 
                     Obra obra = new DaoObra().get(idObra);
 
                     if (obra == null) {
                         response.sendError(404);
-                    } else {
-                        if (!obra.hasDisponivel()) {
-                            if (usuario.canReservar()) {
-                                List<Reserva> reservas = daoReserva.listByUsuarioObra(usuario, obra);
-                                if (reservas.isEmpty()) {
+                    } else if (!obra.hasDisponivel()) {
+                        if (usuario.canReservar()) {
+                            List<Reserva> reservas = daoReserva.listByUsuarioObra(usuario, obra);
+                            if (reservas.isEmpty()) {
+                                if (obra.getCategoria().emprestavel()) {
                                     reserva.setObra(obra);
                                     reserva.setUsuario(null);
-                                    reserva.setStatus(Reserva.EMESPERA);
+                                    reserva.setStatus(Reserva.AGUARDANDO);
                                     reserva.setDiaReserva(Calendar.getInstance().getTime());
 
                                     daoReserva.insert(reserva);
 
                                     response.sendRedirect("Reserva?op=view&new=true&idReserva=" + reserva.getId());
                                 } else {
-                                    messages.add(new Message("Usuário já possui reserva desta Obra!", Message.TYPE_ERROR));
+                                    messages.add(new Message("Esta Obra não pode ser emprestada e nem reservada!", Message.TYPE_ERROR));
 
                                     request.setAttribute("messages", messages);
 
@@ -107,7 +133,7 @@ public class ServletReserva extends HttpServlet {
                                     dispatcher.forward(request, response);
                                 }
                             } else {
-                                messages.add(new Message("Usuário não pode efetuar mais reservas!", Message.TYPE_ERROR));
+                                messages.add(new Message("Usuário já possui reserva desta Obra!", Message.TYPE_ERROR));
 
                                 request.setAttribute("messages", messages);
 
@@ -115,14 +141,22 @@ public class ServletReserva extends HttpServlet {
                                 dispatcher.forward(request, response);
                             }
                         } else {
-                            messages.add(new Message("Existe exemplares disponível desta Obra!", Message.TYPE_ERROR));
+                            messages.add(new Message("Usuário não pode efetuar mais reservas!", Message.TYPE_ERROR));
 
                             request.setAttribute("messages", messages);
 
                             dispatcher = request.getRequestDispatcher("reservaCreate.jsp");
                             dispatcher.forward(request, response);
                         }
+                    } else {
+                        messages.add(new Message("Existe exemplares disponível desta Obra!", Message.TYPE_ERROR));
+
+                        request.setAttribute("messages", messages);
+
+                        dispatcher = request.getRequestDispatcher("reservaCreate.jsp");
+                        dispatcher.forward(request, response);
                     }
+
                     break;
                 case "update":
                     break;
