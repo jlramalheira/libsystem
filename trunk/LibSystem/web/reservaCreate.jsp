@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="form-group col-lg-10">
                                 <label for="obra">Obra</label>
-                                <select data-type="selectsearch">
+                                <select data-type="selectsearch" name="obra">
                                     <%for (Obra obra : obras){%>
                                     <option value="<%=obra.getId()%>"><%=obra.getTitulo()%></option>
                                     <%}%>

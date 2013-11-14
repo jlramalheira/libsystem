@@ -113,7 +113,7 @@ if (obras == null){
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3"><%=obras.size() == 1 ? "1 resultado encontrado" : obras.size() + " resultados encontrados"%></th>
+                            <th colspan="5"><%=obras.size() == 1 ? "1 resultado encontrado" : obras.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>
