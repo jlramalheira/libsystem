@@ -170,7 +170,6 @@ public class ServletUsuario extends HttpServlet {
                                         "Olá " + usuario.getNome() + "\n\n"
                                         + "Seu cadastro foi efetuado com sucesso!\n\n"
                                         + "Atenciosamente,\nColumbus");
-
                                 response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
                             } else {
                                 messages.add(new Message("Login já cadastrado", Message.TYPE_ERROR));

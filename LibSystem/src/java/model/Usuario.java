@@ -83,10 +83,11 @@ public class Usuario implements Serializable {
     
     public boolean canReservar(){
         List<Reserva> reservas = new DaoReserva().listByUsuario(this);
-        if (reservas.size() < this.perfil.getQuantidadeReservas()){
-            return true;
-        }
-        return false;        
+//        if (reservas.size() < this.perfil.getQuantidadeReservas()){
+//            return true;
+//        }
+        //return false;        
+        return true;
     }
 
     @Override

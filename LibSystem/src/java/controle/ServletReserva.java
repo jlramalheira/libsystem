@@ -56,9 +56,46 @@ public class ServletReserva extends HttpServlet {
                     dispatcher = request.getRequestDispatcher("reservaCreate.jsp");
                     dispatcher.forward(request, response);
                     break;
-                case "update":
+                case "search":
+                    int status = -1;
+                    List<Reserva> reservasSearch;
+                    if (!request.getParameter("status").isEmpty()) {
+                        status = Integer.parseInt(request.getParameter("status"));
+                        reservasSearch = daoReserva.listByTituloobraStatus(request.getParameter("obra"), status);
+                    } else {
+                        reservasSearch = daoReserva.listByTituloobra(request.getParameter("obra"));
+                    }
+
+                    request.setAttribute("reservas", reservasSearch);
+
+                    dispatcher = request.getRequestDispatcher("reservaList.jsp");
+                    dispatcher.forward(request, response);
                     break;
-                case "delete":
+                case "cancelar":
+                    idReserva = Long.parseLong(request.getParameter("idReserva"));
+
+                    reserva = daoReserva.get(idReserva);
+
+                    if (reserva == null) {
+                        response.sendError(404);
+                    } else {
+                        reserva.setStatus(Reserva.CANCELADA);
+
+                        daoReserva.update(reserva);
+
+                        if (reserva.getStatus() == Reserva.DISPONIVEL) {
+                            Reserva proximaReserva = daoReserva.getNextReserva(reserva.getObra());
+
+                            proximaReserva.setStatus(Reserva.DISPONIVEL);
+
+                            daoReserva.update(reserva);
+                        }
+
+                        request.setAttribute("reserva", reserva);
+
+                        dispatcher = request.getRequestDispatcher("reservaView.jsp");
+                        dispatcher.forward(request, response);
+                    }
                     break;
                 case "view":
                     idReserva = Long.parseLong(request.getParameter("idReserva"));
@@ -77,9 +114,17 @@ public class ServletReserva extends HttpServlet {
                         request.setAttribute("reserva", reserva);
                         request.setAttribute("messages", messages);
 
-                        dispatcher = request.getRequestDispatcher("obraView.jsp");
+                        dispatcher = request.getRequestDispatcher("reservaView.jsp");
                         dispatcher.forward(request, response);
                     }
+                    break;
+                case "list":
+                    List<Reserva> reservas = daoReserva.list();
+
+                    request.setAttribute("reservas", reservas);
+
+                    dispatcher = request.getRequestDispatcher("reservaList.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 default:
                     response.sendError(404);
@@ -97,12 +142,17 @@ public class ServletReserva extends HttpServlet {
 
         HttpSession session = request.getSession(true);
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        if (action == null || usuario == null) {
+        //Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario usuario = new Usuario();
+        //if (action == null || usuario == null) {
+        if (action == null) {
             response.sendError(404);
         } else {
             switch (action) {
                 case "create":
+                    //para mensagens de erro precisa ser setado novamente obras na requisição
+                    List<Obra> obras = new DaoObra().listOderCategoria();
+                    request.setAttribute("obras", obras);
                     reserva = new Reserva();
 
                     Long idObra = Long.parseLong(request.getParameter("obra"));

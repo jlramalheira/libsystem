@@ -7,10 +7,10 @@
 <%@page import="model.Reserva"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-Reserva reserva = (Reserva) request.getAttribute("reserva");
-if (reserva == null){
-    response.sendError(404);
-}
+    Reserva reserva = (Reserva) request.getAttribute("reserva");
+    if (reserva == null) {
+        response.sendError(404);
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -36,33 +36,46 @@ if (reserva == null){
                                 <tr>
                                     <th>Status</th>
                                     <td>
-                                        <%switch(reserva.getStatus()){
-                                            case Reserva.AGUARDANDO: %>
+                                        <%switch (reserva.getStatus()) {
+                                                case Reserva.AGUARDANDO:%>
                                         <span class="label label-default">Aguardando</span>
-                                        <% break; case Reserva.EFETUADA: %>
+                                        <% break;
+                                            case Reserva.EFETUADA:%>
                                         <span class="label label-info">Efetuada</span>
-                                        <% break; case Reserva.DISPONIVEL: %>
+                                        <% break;
+                                            case Reserva.DISPONIVEL:%>
                                         <span class="label label-success">Disponível</span>
-                                        <% break; case Reserva.EXPIRADA: %>
+                                        <% break;
+                                            case Reserva.EXPIRADA:%>
                                         <span class="label label-warning">Expirada</span>
-                                        <% break; case Reserva.CANCELADA: %>
+                                        <% break;
+                                            case Reserva.CANCELADA:%>
                                         <span class="label label-danger">Cancelada</span>
                                         <%}%>
                                     </td>
                                 </tr>
+                                <%if (reserva.getStatus() == Reserva.DISPONIVEL){ %>
                                 <tr>
                                     <th>Expira em</th>
                                     <td>08/08/2008</td>
                                 </tr>
+                                <%} else if(reserva.getStatus() == Reserva.EXPIRADA){%>
+                                <tr>
+                                    <th>Expirada em</th>
+                                    <td>08/08/2008</td>
+                                </tr>
+                                <%}%>
                             </tbody>
                         </table>
                     </div>
+                    <%if (reserva.getStatus() == Reserva.AGUARDANDO || reserva.getStatus() == Reserva.DISPONIVEL) {%>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <a href="Reserva?op=cancelar&id=#" 
+                        <a href="Reserva?op=cancelar&idReserva=<%=reserva.getId()%>" 
                            class="btn btn-danger btn-block btn-lg">
                             Cancelar reserva
                         </a>                  
                     </div>
+                    <%}%>
                 </div>
             </div>
         </div>
