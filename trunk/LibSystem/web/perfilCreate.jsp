@@ -20,7 +20,7 @@
                 <h1>Cadastrar perfil</h1>
                 <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Perfil" role="form">
-                     <fieldset>                        
+                    <fieldset>                        
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="nome">Nome</label>
@@ -28,14 +28,103 @@
                                        id="nome" class="form-control"
                                        placeholder="Nomenclatura do perfil"/>
                             </div>
+                        </div>   
+                    </fieldset>
+                    <fieldset>
+                        <legend>Atividades gerais</legend>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="tempo-emprestimo">Tempo de empréstimo</label>
+                                <div class="input-group">                                    
+                                    <input type="number" name="tempo-emprestimo" value="1"
+                                           id="tempo-emprestimo" class="form-control"
+                                           min="1"/>
+                                    <span class="input-group-addon">dias</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="tempo-reserva">Tempo de reserva disponível</label>
+                                <div class="input-group">                                    
+                                    <input type="number" name="tempo-reserva" value="1"
+                                           id="tempo-reserva" class="form-control"
+                                           min="1"/>
+                                    <span class="input-group-addon">dias</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Atividades administrativas</legend>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <div class="checkbox">
+                                    <label for="gerenciar-perfil">
+                                        <input type="checkbox" name="gerenciar-perfil" value="true"
+                                               id="gerenciar-perfil" />
+                                        Gerenciar perfis
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         
-                     </fieldset>
-                     <hr/>
-                     <button type="submit" value="create" name="op"
-                             class="btn btn-lg btn-primary">Cadastrar</button>
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <div class="checkbox">
+                                    <label for="gerenciar-usuario">
+                                        <input type="checkbox" name="gerenciar-usuario" value="true"
+                                               id="gerenciar-usuario" />
+                                        Gerenciar usuários
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <div class="checkbox">
+                                    <label for="gerenciar-obras">
+                                        <input type="checkbox" name="gerenciar-obras" value="true"
+                                               id="gerenciar-obras" />
+                                        Gerenciar obras
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <div class="checkbox">
+                                    <label for="gerenciar-emprestimos">
+                                        <input type="checkbox" name="gerenciar-emprestimos" value="true"
+                                               id="gerenciar-emprestimos" />
+                                        Gerenciar empréstimos
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <div class="checkbox">
+                                    <label for="gerenciar-reservas">
+                                        <input type="checkbox" name="gerenciar-reservas" value="true"
+                                               id="gerenciar-reservas" />
+                                        Gerenciar reservas
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </fieldset>
+                    <hr/>
+                    <button type="submit" value="create" name="op"
+                            class="btn btn-lg btn-primary">Cadastrar</button>
                 </form>
-                
+
             </div>
         </div>
 
