@@ -5,6 +5,7 @@
     Description:
 --%>
 
+<%@page import="model.Reserva"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,7 @@
         <%@include file="interfaceHeader.jsp" %>
 
         <div class="container">
-            <%@include file="interfaceMenuUsuario.jsp" %>
+            <%@include file="interfaceMenuEmprestimo.jsp" %>
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar Reservas</h1>
                 <%@include file="interfaceMessages.jsp" %>
@@ -30,28 +31,16 @@
                     </div>
                     <div id="searchfilter-panel" style="display: none;">
                         <div class="row">
-                            <div class="form-group col-lg-12">
-                                <label>Status</label><br/>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="status" value="#"/>
-                                    Aguardando
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="status" value="#"/>
-                                    Disponível
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="status" value="#"/>
-                                    Expirada
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="status" value="#"/>
-                                    Cancelada
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" name="status" value="#"/>
-                                    Efetuada
-                                </label>
+                            <div class="form-group col-lg-6">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status">
+                                    <option>Selecione um status</option>
+                                    <option value="<%= Reserva.AGUARDANDO %>">Aguardando</option>
+                                    <option value="<%= Reserva.CANCELADA %>">Cancelada</option>
+                                    <option value="<%= Reserva.DISPONIVEL %>">Disponivel</option>
+                                    <option value="<%= Reserva.EFETUADA %>">Efetuada</option>
+                                    <option value="<%= Reserva.EXPIRADA %>">Expirada</option>
+                                </select>
                             </div>
                         </div>
                     </div>
