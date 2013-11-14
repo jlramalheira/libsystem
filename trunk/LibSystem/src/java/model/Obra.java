@@ -107,12 +107,12 @@ public class Obra implements Serializable {
     
     public boolean hasDisponivel(){
         List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.DISPONIVEL);
-        return exemplares.isEmpty();
+        return !exemplares.isEmpty();
     }
     
     public boolean hasEmprestado(){
         List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.EMPRESTADO);
-        return exemplares.isEmpty();
+        return !exemplares.isEmpty();
     }
 
     @Override

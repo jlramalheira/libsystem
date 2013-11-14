@@ -4,6 +4,7 @@
     Author     : max
     Description:
 --%>
+<%@page import="model.Categoria"%>
 <%@page import="model.Exemplar"%>
 <%@page import="model.Obra"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -66,7 +67,7 @@ if (obra == null){
                            class="btn btn-primary btn-block btn-lg">
                             Editar obra
                         </a>
-                        <a href="Obra?op=update&idObra=<%=obra.getId()%>" 
+                        <a href="Obra?op=delete&idObra=<%=obra.getId()%>" 
                            class="btn btn-danger btn-block btn-lg">
                             Excluir obra
                         </a> 

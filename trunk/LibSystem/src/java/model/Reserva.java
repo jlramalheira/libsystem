@@ -21,8 +21,10 @@ import javax.persistence.Temporal;
 public class Reserva implements Serializable {
     
     public static final int CANCELADA = 0;
-    public static final int EMESPERA = 1;
+    public static final int AGUARDANDO = 1;
     public static final int EFETUADA = 2;
+    public static final int DISPONIVEL = 3;
+    public static final int EXPIRADA = 4;
     
     
     private static final long serialVersionUID = 1L;
