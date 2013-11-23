@@ -8,7 +8,7 @@
 <%@page import="model.Obra"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%    
+<%
     List<Obra> obras = (List<Obra>) request.getAttribute("obras");
     if (obras == null) {
         response.sendError(404);
