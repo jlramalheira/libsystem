@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -20,20 +21,25 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Emprestimo implements Serializable {
+
     private static final long serialVersionUID = 1L;
+    public static final int NORMAL = 0;
+    public static final int DEVOLVIDO = 1;
+    public static final int ATRASADO = 2;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     @ManyToOne
     private Usuario usuario;
-    
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataEmprestimo;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date dataDevolucao;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataDevolucaoPrevista;
     @ManyToOne
     private Exemplar exemplar;
+    @OneToOne
+    private Devolucao devolucao;
 
     public Long getId() {
         return id;
@@ -67,5 +73,4 @@ public class Emprestimo implements Serializable {
     public String toString() {
         return "model.Emprestimo[ id=" + id + " ]";
     }
-    
 }

@@ -16,7 +16,8 @@ $('[data-rowlink] tbody tr[data-rowlink-href]').click(function(){
 
 $(document).ready(function(){
     $('select[data-type="selectsearch"]').select2({
-        placeholder: "Escolha uma opção"
+        placeholder: "Escolha uma opção",
+        allowClear: false
     });
 });
 

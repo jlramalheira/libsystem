@@ -5,6 +5,8 @@
     Description:
 --%>
 
+<%@page import="model.Emprestimo"%>
+<%@page import="model.Devolucao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -49,17 +51,45 @@
                                        id="data-saida-fim" class="form-control"/>
                             </div>                            
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-5">
-                                <label for="data-devolucao-inicio">Data de devolução prevista</label>
-                                <input type="date" name="data-devolucao-inicio" value=""
-                                       id="data-devolucao-inicio" class="form-control"/>
+                                <label for="data-devolucao-prevista-inicio">Data de devolução prevista</label>
+                                <input type="date" name="data-devolucao-prevista-inicio" value=""
+                                       id="data-devolucao-prevista-inicio" class="form-control"/>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <label for="data-devolucao-prevista-fim">Data de devolução prevista</label>
+                                <input type="date" name="data-devolucao-prevista-fim" value=""
+                                       id="data-devolucao-prevista-fim" class="form-control"/>
                             </div>
                         </div>
-                        
+
                         <fieldset>
                             <legend>Pesquisar por devoluções</legend>
+                            <div class="row">
+                                <div class="form-group col-lg-5">
+                                    <label for="data-devolucao-inicio">Data de devolução</label>
+                                    <input type="date" name="data-devolucao-inicio" value=""
+                                           id="data-devolucao--inicio" class="form-control"/>
+                                </div>
+                                <div class="form-group col-lg-5">
+                                    <label for="data-devolucao-fim">Data de devolução</label>
+                                    <input type="date" name="data-devolucao-fim" value=""
+                                           id="data-devolucao-prevista-fim" class="form-control"/>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label for="status">Status da devolução</label>
+                                    <select class="form-control">
+                                        <option value="<%= Emprestimo.NORMAL %>">Normal</option>
+                                        <option value="<%= Emprestimo.DEVOLVIDO %>">Devolvido</option>
+                                        <option value="<%= Emprestimo.ATRASADO %>">Atrasado</option>
+                                    </select>
+                                </div>
+                            </div>
                             
                         </fieldset>
                     </div>

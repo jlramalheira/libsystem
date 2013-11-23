@@ -25,8 +25,6 @@ public class Devolucao implements Serializable {
     private Long id;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataDevolucao;
-    @OneToOne
-    private Emprestimo emprestimo;
 
     public Long getId() {
         return id;
