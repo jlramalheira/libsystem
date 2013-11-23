@@ -6,7 +6,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,6 +49,49 @@ public class Emprestimo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Date getDataEmprestimo() {
+        return dataEmprestimo;
+    }
+
+    public void setDataEmprestimo(Date dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
+    }
+
+    public Date getDataDevolucaoPrevista() {
+        return dataDevolucaoPrevista;
+    }
+
+    public void setDataDevolucaoPrevista(int dias) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(this.dataEmprestimo);
+        calendar.add(Calendar.DAY_OF_MONTH, dias);
+        this.dataDevolucaoPrevista = calendar.getTime();
+    }
+
+    public Devolucao getDevolucao() {
+        return devolucao;
+    }
+
+    public void setDevolucao(Devolucao devolucao) {
+        this.devolucao = devolucao;
+    }
+
+    public Exemplar getExemplar() {
+        return exemplar;
+    }
+
+    public void setExemplar(Exemplar exemplar) {
+        this.exemplar = exemplar;
     }
 
     @Override

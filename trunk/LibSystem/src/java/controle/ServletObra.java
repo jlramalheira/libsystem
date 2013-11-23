@@ -8,6 +8,7 @@ import dao.DaoExemplar;
 import dao.DaoObra;
 import dao.DaoReserva;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -140,6 +141,27 @@ public class ServletObra extends HttpServlet {
 
                     dispatcher = request.getRequestDispatcher("obraList.jsp");
                     dispatcher.forward(request, response);
+                    break;
+                case "nameObra":
+                    Long idExemplar = Long.parseLong(request.getParameter("idExemplar"));
+                    //alterar, vem o id do exemplar e nao da obra
+                    Exemplar exemplar = new DaoExemplar().get(idExemplar);
+                    String titulo;
+                    Long id;
+                    if (exemplar == null) {
+                        titulo = "ERROR: Obra não cadastrada no Sistema!";
+                        id = (long) -1;
+                    } else {
+                        titulo = exemplar.getObra().getTitulo();
+                        id = exemplar.getObra().getId();
+                    }
+                    String json = "{\"titulo\":\"" + titulo + "\" , "
+                            + "\"id\":\"" + id + "\"}";
+                    response.setContentType("application/json");
+                    PrintWriter out = response.getWriter();
+                    out.write(json);
+                    out.flush();
+
                     break;
                 default:
                     response.sendError(404);

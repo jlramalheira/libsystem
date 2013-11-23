@@ -124,7 +124,26 @@ public class ServletPerfil extends HttpServlet {
                     perfil = new Perfil();
 
                     perfil.setNome(request.getParameter("nome"));
-                    //TODO ver como definir os privilegios
+                    perfil.setDiasEmprestimo(Integer.parseInt(request.getParameter("tempo-emprestimo")));
+                    perfil.setDiasReserva(Integer.parseInt(request.getParameter("tempo-reserva")));
+                    perfil.setQuantidadeReservas(Integer.parseInt(request.getParameter("quantidade-reserva")));
+                    
+                    if (request.getParameter("gerenciar-perfil") != null){
+                        perfil.setAcessoPerfil(true);
+                    }
+                    if (request.getParameter("gerenciar-usuario") != null){
+                        perfil.setAcessoUsuario(true);
+                    }
+                    if (request.getParameter("gerenciar-obras") != null){
+                        perfil.setAcessoObra(true);
+                    }
+                    if (request.getParameter("gerenciar-emprestimos") != null){
+                        perfil.setAcessoEmprestimo(true);
+                    }
+                    if (request.getParameter("gerenciar-reservas") != null){
+                        perfil.setAcessoReserva(true);
+                    }
+                    
                     daoPerfil.insert(perfil);
                     response.sendRedirect("Perfil?op=view&new=true&idPerfil=" + perfil.getId());
                     break;

@@ -22,8 +22,6 @@ public class Debito implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double valor;
-    @OneToOne
-    private Devolucao devolucao;
 
     public Long getId() {
         return id;
@@ -31,6 +29,14 @@ public class Debito implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
     @Override
