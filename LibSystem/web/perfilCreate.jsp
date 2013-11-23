@@ -55,6 +55,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="quantidade-reserva">Quantidade de reserva disponível</label>
+                                <div class="input-group">                                    
+                                    <input type="number" name="quantidade-reserva" value="1"
+                                           id="quantidade-reserva" class="form-control"
+                                           min="1"/>
+                                    <span class="input-group-addon">dias</span>
+                                </div>
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset>
                         <legend>Atividades administrativas</legend>

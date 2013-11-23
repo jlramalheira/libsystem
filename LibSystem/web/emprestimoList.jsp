@@ -6,8 +6,13 @@
 --%>
 
 <%@page import="model.Emprestimo"%>
-<%@page import="model.Devolucao"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%List<Emprestimo> emprestimos = (List<Emprestimo>) request.getAttribute("emprestimos"); 
+    if (emprestimos == null){
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,11 +26,11 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Listar empréstimos</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="" role="form">                        
+                <form method="get" action="Emprestimo" role="form">                        
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="obra">Obra</label>
-                            <input type="obra" name="usuario" value=""
+                            <input type="text" name="obra" value=""
                                    id="obra" class="form-control"
                                    placeholder="Nome da obra"/>
                         </div>
@@ -101,37 +106,32 @@
                             class="btn btn-lg btn-default">Mais opções</button>
                 </form>
                 <hr/>
+                <%if (!emprestimos.isEmpty()){ %>
                 <table data-rowlink class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>#ID</th>
-                            <th>Input</th>
-                            <th>Input</th>
+                            <th>Usuário</th>
+                            <th>Obra</th>
                     </thead>
                     <tbody>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
+                        <%for(Emprestimo emprestimo : emprestimos){ %>
+                        <tr data-rowlink-href="Emprestimo?op=view&idEmprestimo=">
+                            <td><%=emprestimo.getId()%></td>
+                            <td><%=emprestimo.getUsuario().getNome()%></td>
+                            <td><%=emprestimo.getExemplar().getObra().getTitulo()%></td>
                         </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
-                        <tr data-rowlink-href="#">
-                            <td>#</td>
-                            <td>ABC</td>
-                            <td>123</td>
-                        </tr>
+                        <%} %>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3">3 resultados encontrados</th>
+                            <th colspan="3"><%=emprestimos.size() == 1 ? "1 resultado encontrado" : emprestimos.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>
-
+                <%} else { %>
+                <h3>Nenhum Emprestimo encontrado!</h3>
+                <% }%>
             </div>
         </div>
 

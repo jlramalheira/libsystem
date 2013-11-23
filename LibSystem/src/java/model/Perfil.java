@@ -21,8 +21,14 @@ public class Perfil implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    private int diasDeReserva;
+    private int diasReserva;
     private int quantidadeReservas;
+    private int diasEmprestimo;
+    private boolean acessoPerfil;
+    private boolean acessoUsuario;
+    private boolean acessoObra;
+    private boolean acessoEmprestimo;
+    private boolean acessoReserva;
 
     public Long getId() {
         return id;
@@ -40,20 +46,67 @@ public class Perfil implements Serializable {
         this.nome = nome;
     }
 
-    public int getDiasDeReserva() {
-        return diasDeReserva;
+    public int getDiasReserva() {
+        return diasReserva;
     }
 
-    public void setDiasDeReserva(int diasDeReserva) {
-        this.diasDeReserva = diasDeReserva;
+    public void setDiasReserva(int diasReserva) {
+        this.diasReserva = diasReserva;
     }
 
+    public int getDiasEmprestimo() {
+        return diasEmprestimo;
+    }
+
+    public void setDiasEmprestimo(int diasEmprestimo) {
+        this.diasEmprestimo = diasEmprestimo;
+    }
     public int getQuantidadeReservas() {
         return quantidadeReservas;
     }
 
     public void setQuantidadeReservas(int quantidadeReservas) {
         this.quantidadeReservas = quantidadeReservas;
+    }
+
+    public boolean isAcessoPerfil() {
+        return acessoPerfil;
+    }
+
+    public void setAcessoPerfil(boolean acessoPerfil) {
+        this.acessoPerfil = acessoPerfil;
+    }
+
+    public boolean isAcessoUsuario() {
+        return acessoUsuario;
+    }
+
+    public void setAcessoUsuario(boolean acessoUsuario) {
+        this.acessoUsuario = acessoUsuario;
+    }
+
+    public boolean isAcessoObra() {
+        return acessoObra;
+    }
+
+    public void setAcessoObra(boolean acessoObra) {
+        this.acessoObra = acessoObra;
+    }
+
+    public boolean isAcessoEmprestimo() {
+        return acessoEmprestimo;
+    }
+
+    public void setAcessoEmprestimo(boolean acessoEmprestimo) {
+        this.acessoEmprestimo = acessoEmprestimo;
+    }
+
+    public boolean isAcessoReserva() {
+        return acessoReserva;
+    }
+
+    public void setAcessoReserva(boolean acessoReserva) {
+        this.acessoReserva = acessoReserva;
     }
 
     @Override

@@ -4,7 +4,15 @@
     Author     : max
     Description:
 --%>
+<%@page import="model.Devolucao"%>
+<%@page import="util.FormatDate"%>
+<%@page import="model.Emprestimo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%Emprestimo emprestimo = (Emprestimo) request.getAttribute("emprestimo");
+    if (emprestimo == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>%
     <head>
@@ -24,45 +32,53 @@
                             <tbody>
                                 <tr>
                                     <th class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Obra</th>
-                                    <td>Nome da obra</td>
+                                    <td><%=emprestimo.getExemplar().getObra().getTitulo()%></td>
                                 </tr>
                                 <tr>
                                     <th>Exemplar</th>
-                                    <td>ID #</td>
+                                    <td><%=emprestimo.getExemplar().getId()%></td>
                                 </tr>
                                 <tr>
                                     <th>Usuário</th>
-                                    <td>Nome do usuário</td>
+                                    <td>Nome do Usuário</td>
                                 </tr>
                                 <tr>
                                     <th>Data de saída</th>
-                                    <td>88/88/8888</td>
+                                    <td><%=FormatDate.dateToString(emprestimo.getDataEmprestimo())%></td>
                                 </tr>
                                 <tr>
                                     <th>Data de devolução prevista</th>
-                                    <td>88/88/8888</td>
+                                    <td><%=FormatDate.dateToString(emprestimo.getDataDevolucaoPrevista())%></td>
                                 </tr>
                             </tbody>
                         </table>
-                        
+
                         <h2>Devolução</h2>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
                                     <th class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Situação</th>
                                     <td>
+                                        <%switch (emprestimo.getDevolucao().getStatus()) {
+                                                case Devolucao.NORMAL:%>
+
                                         <span class="label label-info">Normal</span>
+                                        <% break;
+                                            case Devolucao.DEVOLVIDO:%>
                                         <span class="label label-success">Devolvido</span>
+                                        <% break;
+                                            case Devolucao.ATRASADO:%>
                                         <span class="label label-warning">Atrasado</span>
+                                        <%}%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Data da devolução</th>
-                                    <td>O exemplar não foi devolvido ainda</td>
+                                    <td><%=emprestimo.getDevolucao().getDataDevolucao() == null ? "Não devolvido" : FormatDate.dateToString(emprestimo.getDevolucao().getDataDevolucao()) %></td>
                                 </tr>
                                 <tr>
                                     <th>Débito</th>
-                                    <td>R$ ##,##</td>
+                                    <td>R$ <%=emprestimo.getDevolucao().getDebito() != null ? emprestimo.getDevolucao().getDebito().getValor() : "0,00"%></td>
                                 </tr>
                             </tbody>
                         </table>

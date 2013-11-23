@@ -20,25 +20,25 @@
                 <h1>Novo empréstimo</h1>
                 <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Emprestimo" role="form">
-                     <fieldset>
+                    <input type="hidden" name="idObra" value="" id="idObra"/>
+                    <fieldset>
                         <legend>Informações do empréstimo</legend>
-                        
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="exemplar">Exemplar</label>
-                                <input type="text" name="exemplar" value=""
-                                       id="exemplar" class="form-control"
+                                <input type="number" name="exemplar" min="0"
+                                       id="exemplar" class="form-control" onblur="getObra()"
                                        placeholder="Código do exemplar"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-12">
-                                <label>Obra</label>
-                                <p>Nome da Obra</p>
+                                <label for="obra">Obra</label>
+                                <p id="obra"> - </p>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-10">
                                 <label for="usuario">Usuário</label>
@@ -47,7 +47,7 @@
                                        placeholder="Nome do usuário"/>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="data-saida">Data de saída</label>
@@ -55,16 +55,31 @@
                                        id="data-saida" class="form-control"/>
                             </div>
                         </div>
-                        
-                     </fieldset>
-                     <hr/>
-                     <button type="submit" name="op" value="create"
-                             class="btn btn-lg btn-primary">Cadastrar</button>
+
+                    </fieldset>
+                    <hr/>
+                    <button type="submit" name="op" value="create"
+                            class="btn btn-lg btn-primary">Cadastrar</button>
                 </form>
-                
+
             </div>
         </div>
 
         <%@include file="interfaceFooter.jsp" %>
+        <script type="text/javascript">
+            function getObra() {
+                idExemplar = $('#exemplar').val();
+                $.ajax({
+                    url: 'Obra',
+                    type: 'GET',
+                    data: 'op=nameObra&idExemplar=' + idExemplar,
+                    dataType: 'json',
+                    success: function(json) {
+                        $('#obra').text(json.titulo);
+                        $('#idObra').text(json.id);
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
