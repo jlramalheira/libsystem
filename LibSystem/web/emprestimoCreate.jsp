@@ -6,11 +6,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
- Usuario usuario = (Usuario) session.getAttribute("usuario");
- if (usuario == null){
-     response.sendError(404);
- }
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -25,16 +25,20 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Novo empréstimo</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="Emprestimo" role="form">
-                    <input type="hidden" name="idObra" value="" id="idObra"/>
+                <form method="post" action="Emprestimo" role="form" parsley-validate novalidate>
                     <fieldset>
                         <legend>Informações do empréstimo</legend>
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="exemplar">Exemplar</label>
-                                <input type="number" name="exemplar" min="0"
+                                <input type="text" name="exemplar" min="0"
                                        id="exemplar" class="form-control" onblur="getObra()"
-                                       placeholder="Código do exemplar"/>
+                                       placeholder="Código do exemplar"
+                                       parsley-type="number"
+                                       parsley-required="true"
+                                       parsley-trigger="change"
+                                       parsley-type-number-message="Informe um número"
+                                       parsley-required-message="Campo obrigatório"/>
                             </div>
                         </div>
 
@@ -42,15 +46,26 @@
                             <div class="form-group col-lg-12">
                                 <label for="obra">Obra</label>
                                 <p id="obra"> - </p>
+                                <input type="number" name="idObra" value="" id="idObra"
+                                       class="hide"
+                                       parsley-trigger="change"
+                                       parsley-type="number"
+                                       parsley-required="true" 
+                                       parsley-min="0"
+                                       parsley-error-message="Selecione uma obra válida"
+                                       />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-lg-10">
                                 <label for="usuario">Usuário</label>
-                                <input type="text" name="usuario" value=""
-                                       id="usuario" class="form-control"
-                                       placeholder="Nome do usuário"/>
+                                <select data-type="selectsearch" class="form-control" name="usuario">
+                                    <option value="id">Nome</option>
+                                    <option value="id">Nome</option>
+                                    <option value="id">Nome</option>
+                                    <option value="id">Nome</option>
+                                </select>
                             </div>
                         </div>
 
@@ -58,7 +73,9 @@
                             <div class="form-group col-lg-5">
                                 <label for="data-saida">Data de saída</label>
                                 <input type="date" name="data-saida" value=""
-                                       id="data-saida" class="form-control"/>
+                                       id="data-saida" class="form-control"
+                                       parsley-required="true"
+                                       parsley-required-message="Selecione uma data válida"/>
                             </div>
                         </div>
 
@@ -82,7 +99,7 @@
                     dataType: 'json',
                     success: function(json) {
                         $('#obra').text(json.titulo);
-                        $('#idObra').text(json.id);
+                        $('#idObra').val(json.id);
                     }
                 });
             }

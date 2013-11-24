@@ -13,7 +13,7 @@ body {
 
 /*HEADER ---------------------------------------------------------------------*/
 header{
-    
+
 }
 
 /*ASIDE ----------------------------------------------------------------------*/
@@ -23,6 +23,19 @@ aside .nav.nav-pills a{
 aside .nav.nav-pills a:hover,
 aside .nav.nav-pills a:focus{
     color: #333;
+}
+
+input[selectsearch]{
+    width: 100%;
+}
+
+
+ul.parsley-error-list{
+    padding: 0;
+    list-style: none;
+}
+ul.parsley-error-list li{
+    color: #b92c28;
 }
 
 /*TABLE ----------------------------------------------------------------------*/

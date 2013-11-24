@@ -7,11 +7,11 @@
 
 <%@page import="model.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
- Usuario usuario = (Usuario) session.getAttribute("usuario");
- if (usuario == null){
-     response.sendError(404);
- }
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -26,7 +26,7 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar Obra</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="Obra" role="form">
+                <form method="post" action="Obra" role="form" parsley-validate novalidate="novalidate">
                     <fieldset>
                         <legend>Informações da obra</legend>
 
@@ -35,7 +35,11 @@
                                 <label for="titulo">Título</label>
                                 <input type="text" name="titulo" value=""
                                        id="titulo" class="form-control"
-                                       placeholder="Título da obra"/>
+                                       placeholder="Título da obra"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       />
                             </div>
                         </div>
 
@@ -44,7 +48,11 @@
                                 <label for="autor">Autor</label>
                                 <input type="text" name="autor" value=""
                                        id="autor" class="form-control"
-                                       placeholder="Autor da obra"/>
+                                       placeholder="Autor da obra"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       />
                             </div>
                         </div>
 
@@ -53,7 +61,11 @@
                                 <label for="editora">Editora</label>
                                 <input type="text" name="editora" value=""
                                        id="autor" class="form-control"
-                                       placeholder="Editora da obra"/>
+                                       placeholder="Editora da obra"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       />
                             </div>
                         </div>
 
@@ -61,7 +73,11 @@
                             <div class="form-group col-lg-3">
                                 <label for="ano">Ano</label>
                                 <input type="number" name="ano" min="0" value="2013"
-                                       id="ano" class="form-control"/>
+                                       id="ano" class="form-control"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       />
                             </div>
                         </div>
 
@@ -69,7 +85,11 @@
                             <div class="form-group col-lg-3">
                                 <label for="exemplares">Exemplares</label>
                                 <input type="number" name="exemplares" min="1" value="1"
-                                       id="exemplares" class="form-control"/>
+                                       id="exemplares" class="form-control"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       />
                             </div>
                         </div>
 
