@@ -24,6 +24,7 @@ public class Perfil implements Serializable {
     private int diasReserva;
     private int quantidadeReservas;
     private int diasEmprestimo;
+    private int quantidadeEmprestimos;
     private boolean acessoPerfil;
     private boolean acessoUsuario;
     private boolean acessoObra;
@@ -61,6 +62,15 @@ public class Perfil implements Serializable {
     public void setDiasEmprestimo(int diasEmprestimo) {
         this.diasEmprestimo = diasEmprestimo;
     }
+
+    public int getQuantidadeEmprestimos() {
+        return quantidadeEmprestimos;
+    }
+
+    public void setQuantidadeEmprestimos(int quantidadeEmprestimos) {
+        this.quantidadeEmprestimos = quantidadeEmprestimos;
+    }
+    
     public int getQuantidadeReservas() {
         return quantidadeReservas;
     }
@@ -69,7 +79,7 @@ public class Perfil implements Serializable {
         this.quantidadeReservas = quantidadeReservas;
     }
 
-    public boolean isAcessoPerfil() {
+    public boolean hasAcessoPerfil() {
         return acessoPerfil;
     }
 
@@ -77,7 +87,7 @@ public class Perfil implements Serializable {
         this.acessoPerfil = acessoPerfil;
     }
 
-    public boolean isAcessoUsuario() {
+    public boolean hasAcessoUsuario() {
         return acessoUsuario;
     }
 
@@ -85,7 +95,7 @@ public class Perfil implements Serializable {
         this.acessoUsuario = acessoUsuario;
     }
 
-    public boolean isAcessoObra() {
+    public boolean hasAcessoObra() {
         return acessoObra;
     }
 
@@ -93,7 +103,7 @@ public class Perfil implements Serializable {
         this.acessoObra = acessoObra;
     }
 
-    public boolean isAcessoEmprestimo() {
+    public boolean hasAcessoEmprestimo() {
         return acessoEmprestimo;
     }
 
@@ -101,7 +111,7 @@ public class Perfil implements Serializable {
         this.acessoEmprestimo = acessoEmprestimo;
     }
 
-    public boolean isAcessoReserva() {
+    public boolean hasAcessoReserva() {
         return acessoReserva;
     }
 

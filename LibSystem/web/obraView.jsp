@@ -10,7 +10,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 Obra obra = (Obra) request.getAttribute("obra");
-if (obra == null){
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (obra == null || usuario == null){
     response.sendError(404);
 }
 %>
@@ -53,11 +54,11 @@ if (obra == null){
                                 </tr>
                                 <tr>
                                     <th>Exemplares</th>
-                                    <td><%=obra.getExemplares()%></td>
+                                    <td><%=obra.getNumeroExemplares()%></td>
                                 </tr>
                                 <tr>
                                     <th>Exemplares disponíveis</th>
-                                    <td><%=obra.getExemplares(Exemplar.DISPONIVEL)%></td>
+                                    <td><%=obra.getNumeroExemplares(Exemplar.DISPONIVEL)%></td>
                                 </tr>
                             </tbody>
                         </table>

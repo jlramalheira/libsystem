@@ -8,7 +8,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Reserva reserva = (Reserva) request.getAttribute("reserva");
-    if (reserva == null) {
+     Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (reserva == null || usuario == null) {
         response.sendError(404);
     }
 %>

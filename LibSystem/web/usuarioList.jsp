@@ -12,7 +12,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%List<Perfil> perfis = new DaoPerfil().list();
     List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
-    if (usuarios == null) {
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuarios == null || usuario == null) {
         response.sendError(404);
     }
 %>
@@ -77,11 +78,11 @@
                             <th>E-mail</th>
                     </thead>
                     <tbody>
-                        <%for (Usuario usuario : usuarios){ %>
-                        <tr data-rowlink-href="Usuario?op=view&idUsuario=<%=usuario.getId()%>">
-                            <td><%=usuario.getId()%></td>
-                            <td><%=usuario.getNome()%></td>
-                            <td><%=usuario.getEmail()%></td>
+                        <%for (Usuario u : usuarios){ %>
+                        <tr data-rowlink-href="Usuario?op=view&idUsuario=<%=u.getId()%>">
+                            <td><%=u.getId()%></td>
+                            <td><%=u.getNome()%></td>
+                            <td><%=u.getEmail()%></td>
                         </tr>
                         <% }%>
                     </tbody>

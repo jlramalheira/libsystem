@@ -4,7 +4,9 @@
  */
 package dao;
 
+import java.util.List;
 import model.Emprestimo;
+import model.Usuario;
 
 /**
  *
@@ -14,6 +16,13 @@ public class DaoEmprestimo extends Dao<Emprestimo>{
 
     public DaoEmprestimo() {
         super(Emprestimo.class);
+    }
+    
+    public List<Emprestimo> listByUsuario(Usuario usuario){
+        criteria = newCriteria();
+        return criteria
+                .andEquals("usuario", usuario)
+                .getResultList();
     }
     
 }

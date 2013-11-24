@@ -17,9 +17,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Devolucao;
 import model.Emprestimo;
 import model.Exemplar;
+import model.Usuario;
 import util.FormatDate;
 import util.Message;
 
@@ -43,7 +45,10 @@ public class ServletEmprestimo extends HttpServlet {
         action = request.getParameter("op");
         daoEmprestimo = new DaoEmprestimo();
         messages = new ArrayList<>();
-        if (action == null) {
+
+        HttpSession session = request.getSession(true);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (action == null || usuario == null) {
             response.sendError(404);
         } else {
             Long idEmprestimo;
@@ -68,6 +73,8 @@ public class ServletEmprestimo extends HttpServlet {
                             messages.add(new Message("Empréstimo cadastrado com sucesso!", Message.TYPE_SUCCESS));
                         } else if (request.getParameter("update") != null) {
                             messages.add(new Message("Empréstimo editado com sucesso!", Message.TYPE_SUCCESS));
+                        } else if (request.getParameter("returned") != null) {
+                            messages.add(new Message("Devolução realizada com sucesso!", Message.TYPE_SUCCESS));
                         }
 
                         request.setAttribute("emprestimo", emprestimo);
@@ -78,7 +85,12 @@ public class ServletEmprestimo extends HttpServlet {
                     }
                     break;
                 case "list":
-                    List<Emprestimo> emprestimos = daoEmprestimo.list();
+                    List<Emprestimo> emprestimos = null;
+                    if (usuario.getPerfil().hasAcessoEmprestimo()) {
+                        emprestimos = daoEmprestimo.list();
+                    } else {
+                        emprestimos = daoEmprestimo.listByUsuario(usuario);
+                    }
 
                     request.setAttribute("emprestimos", emprestimos);
 
@@ -105,27 +117,52 @@ public class ServletEmprestimo extends HttpServlet {
                 case "create":
                     emprestimo = new Emprestimo();
                     Long idExemplar = Long.parseLong(request.getParameter("exemplar"));
-
-                    Exemplar exemplar = new DaoExemplar().get(idExemplar);
+                    DaoExemplar daoExemplar = new DaoExemplar();
+                    Exemplar exemplar = daoExemplar.get(idExemplar);
 
                     if (exemplar == null) {
                         response.sendError(404);
                     } else {
-                        Devolucao devolucao = new Devolucao();
-                        devolucao.setStatus(Devolucao.NORMAL);
-                        
-                        new DaoDevolucao().insert(devolucao);
-                        
-                        emprestimo.setExemplar(exemplar);
-                        emprestimo.setDataEmprestimo(FormatDate.stringToDateUs(request.getParameter("data-saida")));
-                        //TODO arrumar com o perfil do usuario
-                        emprestimo.setDataDevolucaoPrevista(10);
-                        emprestimo.setDevolucao(devolucao);
-                        daoEmprestimo.insert(emprestimo);
-                        
-                        
-                        
-                        response.sendRedirect("Emprestimo?op=view&new=true&idEmprestimo="+emprestimo.getId());
+
+                        if (exemplar.getObra().getCategoria().emprestavel()) {
+                            if (exemplar.getObra().hasDisponivel()) {
+                                if (exemplar.getObra().getNumeroReservas() < exemplar.getObra().getNumeroExemplares(Exemplar.DISPONIVEL)) {
+                                    //TODO verificar se usuario pode
+                                    Devolucao devolucao = new Devolucao();
+                                    devolucao.setStatus(Devolucao.NORMAL);
+
+                                    new DaoDevolucao().insert(devolucao);
+
+                                    exemplar.setStatus(Exemplar.EMPRESTADO);
+
+                                    daoExemplar.update(exemplar);
+
+                                    emprestimo.setExemplar(exemplar);
+                                    emprestimo.setDataEmprestimo(FormatDate.stringToDateUs(request.getParameter("data-saida")));
+                                    //TODO arrumar com o perfil do usuario
+                                    emprestimo.setDataDevolucaoPrevista(10);
+                                    emprestimo.setDevolucao(devolucao);
+                                    daoEmprestimo.insert(emprestimo);
+
+                                    response.sendRedirect("Emprestimo?op=view&new=true&idEmprestimo=" + emprestimo.getId());
+                                } else {
+                                    messages.add(new Message("Os exemplares desta obra estão reservados!", Message.TYPE_ERROR));
+
+                                    dispatcher = request.getRequestDispatcher("emprestimoCreate.jsp");
+                                    dispatcher.forward(request, response);
+                                }
+                            } else {
+                                messages.add(new Message("Esta obra não possui exemplares disponível!", Message.TYPE_ERROR));
+
+                                dispatcher = request.getRequestDispatcher("emprestimoCreate.jsp");
+                                dispatcher.forward(request, response);
+                            }
+                        } else {
+                            messages.add(new Message(exemplar.getObra().getCategoria().valor() + " não pode ser emprestado!", Message.TYPE_ERROR));
+
+                            dispatcher = request.getRequestDispatcher("emprestimoCreate.jsp");
+                            dispatcher.forward(request, response);
+                        }
                     }
                     break;
                 case "update":

@@ -4,7 +4,9 @@
         <div class="list-group-item">
             <h4>Obras</h4>
         </div>
+        <%if(usuario.getPerfil().hasAcessoObra()) {%>
         <a href="Obra?op=create" class="list-group-item">Cadastrar obra</a>
+        <%}%>
         <a href="Obra?op=list" class="list-group-item">Listar obras</a>
     </div>
 </aside>

@@ -8,7 +8,12 @@
 <%@page import="dao.DaoPerfil"%>
 <%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% List<Perfil> perfis = new DaoPerfil().list();%>
+<% List<Perfil> perfis = new DaoPerfil().list();
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

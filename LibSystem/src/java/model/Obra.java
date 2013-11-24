@@ -5,6 +5,7 @@
 package model;
 
 import dao.DaoExemplar;
+import dao.DaoReserva;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -97,12 +98,16 @@ public class Obra implements Serializable {
 
     }
     
-    public int getExemplares(){
-        return new DaoExemplar().getExemplares(this);
+    public int getNumeroExemplares(){
+        return new DaoExemplar().getNumeroExemplares(this);
     }
     
-    public int getExemplares(int status){
-        return new DaoExemplar().getExemplaresByStatus(this,status);
+    public int getNumeroExemplares(int status){
+        return new DaoExemplar().getNumeroExemplaresByStatus(this,status);
+    }
+    
+    public int getNumeroReservas(){
+        return new DaoReserva().getNumeroByObra(this);
     }
     
     public boolean hasDisponivel(){

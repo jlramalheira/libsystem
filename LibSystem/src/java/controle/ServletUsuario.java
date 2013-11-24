@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import model.Perfil;
 import model.Usuario;
 import email.Email;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import util.Message;
 import util.Util;
@@ -42,6 +46,8 @@ public class ServletUsuario extends HttpServlet {
         action = request.getParameter("op");
         daoUsuario = new DaoUsuario();
         messages = new ArrayList<>();
+
+        HttpSession session = request.getSession(true);
         if (action == null) {
             response.sendError(404);
         } else {
@@ -115,9 +121,22 @@ public class ServletUsuario extends HttpServlet {
                     dispatcher.forward(request, response);
                     break;
                 case "login":
+                    if (request.getParameter("recover") != null) {
+                        messages.add(new Message("Sua nova senha foi enviada ao seu email!", Message.TYPE_SUCCESS));
+                        request.setAttribute("messages", messages);
+                    }
+                    
                     dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
                     dispatcher.forward(request, response);
                     break;
+                case "recuperarSenha":
+                    dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
+                    dispatcher.forward(request, response);
+                    break;
+                case "loggout":
+                    session.invalidate();
+                    dispatcher = request.getRequestDispatcher("index.jsp");
+                    dispatcher.forward(request, response);
                 default:
                     response.sendError(404);
             }
@@ -244,23 +263,54 @@ public class ServletUsuario extends HttpServlet {
 
                     break;
                 case "login":
-                    usuario = daoUsuario.getByLogin(request.getParameter(""));
+                    usuario = daoUsuario.getByLogin(request.getParameter("usuario"));
 
                     if (usuario != null) {
-                        if (usuario.getSenha().equals(Util.criptografarSenha(request.getParameter("")))) {
+                        if (usuario.getSenha().equals(Util.criptografarSenha(request.getParameter("senha")))) {
                             session.setAttribute("usuario", usuario);
+
+                            response.sendRedirect("Usuario?op=view&recover=true&idUsuario=" + usuario.getId());
                         } else {
                             messages.add(new Message("Senha inválida!", Message.TYPE_ERROR));
 
                             request.setAttribute("messages", messages);
-                            dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                            dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
                             dispatcher.forward(request, response);
                         }
                     } else {
                         messages.add(new Message("Login inválido!", Message.TYPE_ERROR));
 
                         request.setAttribute("messages", messages);
-                        dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                        dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                    break;
+                case "recuperarSenha":
+                    usuario = daoUsuario.getByEmail(request.getParameter("email"));
+
+                    if (usuario != null) {
+                        String senha = Util.geraSenhaAleatoria();
+                        usuario.setSenha(Util.criptografarSenha(senha));
+
+                        daoUsuario.update(usuario);
+
+                        String email = usuario.getEmail();
+                        try {
+                            Email.sendEmail(email, "Alteração Senha sistema Columbus",
+                                    "Olá " + usuario.getNome() + "\n\n"
+                                    + "Sua senha foi alterada para: " + senha + "\n"
+                                    + "Recomendamos que você altere sua senha!\n\n"
+                                    + "Atenciosamente,\nColumbus");
+                        } catch (Exception ex) {
+                            response.sendError(404);
+                        }
+
+                        response.sendRedirect("Usuario?op=login");
+                    } else {
+                        messages.add(new Message("Email inválido!", Message.TYPE_ERROR));
+
+                        request.setAttribute("messages", messages);
+                        dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
                         dispatcher.forward(request, response);
                     }
                     break;

@@ -10,7 +10,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 Obra obra = (Obra) request.getAttribute("obra");
-if (obra == null){
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (obra == null || usuario == null){
     response.sendError(404);
 }
 %>
@@ -71,7 +72,7 @@ if (obra == null){
                         <div class="row">
                             <div class="form-group col-lg-3">
                                 <label for="exemplares">Exemplares</label>
-                                <input type="number" name="exemplares" min="1" value="<%=obra.getExemplares()%>"
+                                <input type="number" name="exemplares" min="1" value="<%=obra.getNumeroExemplares()%>"
                                        id="exemplares" class="form-control"/>
                             </div>
                         </div>
