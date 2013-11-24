@@ -26,7 +26,6 @@ public class Util {
         }
         BigInteger hash = new BigInteger(1, md.digest(senha.getBytes()));
         sen = hash.toString(16);
-        System.out.println(sen);
         return sen;
     }
     

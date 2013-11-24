@@ -4,7 +4,9 @@
  */
 package model;
 
+import dao.DaoEmprestimo;
 import dao.DaoReserva;
+import dao.DaoUsuario;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
@@ -83,12 +85,23 @@ public class Usuario implements Serializable {
     
     public boolean canReservar(){
         List<Reserva> reservas = new DaoReserva().listByUsuario(this);
-//        if (reservas.size() < this.perfil.getQuantidadeReservas()){
-//            return true;
-//        }
-        //return false;        
-        return true;
+        if (reservas.size() < this.perfil.getQuantidadeReservas()){
+            return true;
+        }
+        return false;        
     }
+    
+     public boolean canEmprestar(){
+        List<Emprestimo> emprestimos = new DaoEmprestimo().listByUsuario(this);
+        if (emprestimos.size() < this.perfil.getQuantidadeEmprestimos()){
+            return true;
+        }
+        return false;        
+    }
+     
+     public double getValorDebitos(){
+         return new DaoUsuario().getTotalDebito(this);
+     }
 
     @Override
     public int hashCode() {

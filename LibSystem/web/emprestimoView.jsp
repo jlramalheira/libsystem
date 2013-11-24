@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <th>Usuário</th>
-                                    <td>Nome do Usuário</td>
+                                    <td><%=emprestimo.getUsuario().getNome()%></td>
                                 </tr>
                                 <tr>
                                     <th>Data de saída</th>

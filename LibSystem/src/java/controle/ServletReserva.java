@@ -149,10 +149,8 @@ public class ServletReserva extends HttpServlet {
 
         HttpSession session = request.getSession(true);
 
-        //Usuario usuario = (Usuario) session.getAttribute("usuario");
-        Usuario usuario = new Usuario();
-        //if (action == null || usuario == null) {
-        if (action == null) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (action == null || usuario == null) {
             response.sendError(404);
         } else {
             switch (action) {
