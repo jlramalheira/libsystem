@@ -27,7 +27,9 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar usuário</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="Usuario" role="form">
+                <form method="post" action="Usuario" role="form" 
+                      parsley-validate
+                      novalidate >
                     <fieldset>
                         <legend>Informações do sistema</legend>
                         <div class="row">
@@ -35,7 +37,11 @@
                                 <label for="usuario">Usuário</label>
                                 <input type="text" name="usuario" value=""
                                        id="usuario" class="form-control"
-                                       placeholder="Nome utilizado para acessar o sistema"/>
+                                       placeholder="Nome utilizado para acessar o sistema"
+                                       required
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"                                       
+                                       />
                             </div>
                         </div>
 
@@ -44,14 +50,19 @@
                                 <label for="senha">Senha</label>
                                 <input type="password" name="senha" value=""
                                        id="senha" class="form-control"
-                                       placeholder="Senha utilizada para acessar o sistema"/>
+                                       placeholder="Senha utilizada para acessar o sistema"
+                                       required
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="perfil">Perfil</label>
-                                <select name="perfil"
+                                <select name="perfil" required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
                                         id="perfil" class="form-control">
                                     <%for (Perfil perfil : perfis) {%>
                                         <option value="<%=perfil.getId()%>"><%=perfil.getNome()%></option>
@@ -68,7 +79,10 @@
                                 <label for="nome">Nome</label>
                                 <input type="text" name="nome" value=""
                                        id="nome" class="form-control"
-                                       placeholder="Seu nome completo"/>
+                                       placeholder="Seu nome completo"
+                                       required="required"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"/>
                             </div>
                         </div>
 
@@ -77,7 +91,11 @@
                                 <label for="email">E-mail</label>
                                 <input type="email" name="email" value=""
                                        id="email" class="form-control"
-                                       placeholder="E-mail para recuperação de senha"/>
+                                       placeholder="E-mail para recuperação de senha"
+                                       parsley-required="true"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"
+                                       parsley-type-email-message="Informe um email válido"/>
                             </div>
                         </div>
                     </fieldset>

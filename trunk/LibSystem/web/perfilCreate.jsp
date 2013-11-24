@@ -6,11 +6,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-Usuario usuario = (Usuario) session.getAttribute("usuario");
-if (usuario == null){
-    response.sendError(404);
-}
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuario == null) {
+        response.sendError(404);
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -25,14 +25,17 @@ if (usuario == null){
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                 <h1>Cadastrar perfil</h1>
                 <%@include file="interfaceMessages.jsp" %>
-                <form method="post" action="Perfil" role="form">
+                <form method="post" action="Perfil" role="form" parsley-validate novalidate>
                     <fieldset>                        
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <label for="nome">Nome</label>
                                 <input type="text" name="nome" value=""
                                        id="nome" class="form-control"
-                                       placeholder="Nomenclatura do perfil"/>
+                                       placeholder="Nomenclatura do perfil"
+                                       parsley-required="true"
+                                       parsley-trigger="change"
+                                       parsley-required-message="Campo obrigatório"/>
                             </div>
                         </div>   
                     </fieldset>
@@ -44,7 +47,10 @@ if (usuario == null){
                                 <div class="input-group">                                    
                                     <input type="number" name="tempo-emprestimo" value="1"
                                            id="tempo-emprestimo" class="form-control"
-                                           min="1"/>
+                                           min="1"
+                                           parsley-required="true"
+                                           parsley-trigger="change"
+                                           parsley-required-message="Campo obrigatório"/>
                                     <span class="input-group-addon">dias</span>
                                 </div>
                             </div>
@@ -55,7 +61,12 @@ if (usuario == null){
                                 <div class="input-group">                                    
                                     <input type="number" name="quantidade-emprestimo" value="1"
                                            id="quantidade-reserva" class="form-control"
-                                           min="1"/>
+                                           min="1"
+                                           parsley-required="true"
+                                           parsley-trigger="change"
+                                           parsley-required-message="Campo obrigatório"
+                                           parsley-number-message="Informe um número"
+                                           />
                                     <span class="input-group-addon">dias</span>
                                 </div>
                             </div>
@@ -66,7 +77,12 @@ if (usuario == null){
                                 <div class="input-group">                                    
                                     <input type="number" name="tempo-reserva" value="1"
                                            id="tempo-reserva" class="form-control"
-                                           min="1"/>
+                                           min="1"
+                                           parsley-required="true"
+                                           parsley-trigger="change"
+                                           parsley-required-message="Campo obrigatório"
+                                           parsley-number-message="Informe um número"
+                                           />
                                     <span class="input-group-addon">dias</span>
                                 </div>
                             </div>
@@ -77,7 +93,12 @@ if (usuario == null){
                                 <div class="input-group">                                    
                                     <input type="number" name="quantidade-reserva" value="1"
                                            id="quantidade-reserva" class="form-control"
-                                           min="1"/>
+                                           min="1"
+                                           parsley-required="true"
+                                           parsley-trigger="change"
+                                           parsley-required-message="Campo obrigatório"
+                                           parsley-number-message="Informe um número"
+                                           />
                                     <span class="input-group-addon">dias</span>
                                 </div>
                             </div>
@@ -96,7 +117,7 @@ if (usuario == null){
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <div class="checkbox">
@@ -108,7 +129,7 @@ if (usuario == null){
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <div class="checkbox">
@@ -120,7 +141,7 @@ if (usuario == null){
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <div class="checkbox">
@@ -132,7 +153,7 @@ if (usuario == null){
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="form-group col-lg-6">
                                 <div class="checkbox">
@@ -144,8 +165,8 @@ if (usuario == null){
                                 </div>
                             </div>
                         </div>
-                        
-                        
+
+
                     </fieldset>
                     <hr/>
                     <button type="submit" value="create" name="op"
