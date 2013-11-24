@@ -48,6 +48,7 @@ public class ServletUsuario extends HttpServlet {
         messages = new ArrayList<>();
 
         HttpSession session = request.getSession(true);
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
         if (action == null) {
             response.sendError(404);
         } else {
@@ -62,11 +63,15 @@ public class ServletUsuario extends HttpServlet {
 
                     usuario = daoUsuario.get(idUsuario);
 
-                    if (usuario == null) {
+                    if (usuario == null || usuarioLogado != null) {
                         response.sendError(404);
                     } else {
-                        request.setAttribute("usuario", usuario);
-
+                        //Não pode editar dados de outro usuário
+                        if (usuarioLogado.getId() == usuario.getId()) {
+                            request.setAttribute("usuario", usuario);
+                        } else {
+                            request.setAttribute("usuario", usuarioLogado);
+                        }
                         dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
                         dispatcher.forward(request, response);
                     }
@@ -78,16 +83,21 @@ public class ServletUsuario extends HttpServlet {
 
                     usuario = daoUsuario.get(idUsuario);
 
-                    if (usuario == null) {
+                    if (usuario == null || usuarioLogado == null) {
                         response.sendError(404);
                     } else {
+                        //Usuario sem privilegio nao pode ver dados dos outros usuarios
+                        if ((usuarioLogado.getId() != usuario.getId()) && (!usuarioLogado.getPerfil().hasAcessoUsuario())) {
+                            request.setAttribute("usuario", usuarioLogado);
+                        } else {
+                            request.setAttribute("usuario", usuario);
+                        }
                         if (request.getParameter("new") != null) {
                             messages.add(new Message("Usuário cadastrado com sucesso!", Message.TYPE_SUCCESS));
                         } else if (request.getParameter("update") != null) {
                             messages.add(new Message("Usuário editado com sucesso!", Message.TYPE_SUCCESS));
                         }
 
-                        request.setAttribute("usuario", usuario);
                         request.setAttribute("messages", messages);
 
                         dispatcher = request.getRequestDispatcher("usuarioView.jsp");
@@ -125,7 +135,7 @@ public class ServletUsuario extends HttpServlet {
                         messages.add(new Message("Sua nova senha foi enviada ao seu email!", Message.TYPE_SUCCESS));
                         request.setAttribute("messages", messages);
                     }
-                    
+
                     dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
                     dispatcher.forward(request, response);
                     break;
@@ -152,7 +162,7 @@ public class ServletUsuario extends HttpServlet {
         messages = new ArrayList<>();
 
         HttpSession session = request.getSession(true);
-
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
         if (action == null) {
             response.sendError(404);
         } else {
@@ -219,27 +229,21 @@ public class ServletUsuario extends HttpServlet {
                     if (usuario == null) {
                         response.sendError(404);
                     } else {
-                        Long idPerfil = Long.parseLong(request.getParameter("perfil"));
-                        Perfil perfil = new DaoPerfil().get(idPerfil);
-
-                        if (perfil == null) {
+                        if (usuarioLogado.getId() != usuario.getId()) {
                             response.sendError(404);
                         } else {
+                            Long idPerfil = Long.parseLong(request.getParameter("perfil"));
+                            Perfil perfil = new DaoPerfil().get(idPerfil);
 
-                            String email = request.getParameter("email");
-
-                            List<Usuario> usuarios = daoUsuario.listByEmail(email);
-
-                            if (usuarios.isEmpty()) {
-                                usuario.setEmail(email);
-                                usuario.setNome(request.getParameter("nome"));
-                                usuario.setPerfil(perfil);
-
-                                daoUsuario.update(usuario);
-
-                                response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                            if (perfil == null) {
+                                response.sendError(404);
                             } else {
-                                if (usuarios.get(0).getEmail().equals(email)) {
+
+                                String email = request.getParameter("email");
+
+                                List<Usuario> usuarios = daoUsuario.listByEmail(email);
+
+                                if (usuarios.isEmpty()) {
                                     usuario.setEmail(email);
                                     usuario.setNome(request.getParameter("nome"));
                                     usuario.setPerfil(perfil);
@@ -248,12 +252,22 @@ public class ServletUsuario extends HttpServlet {
 
                                     response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
                                 } else {
-                                    //TODO tratar erro
-                                    messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+                                    if (usuarios.get(0).getEmail().equals(email)) {
+                                        usuario.setEmail(email);
+                                        usuario.setNome(request.getParameter("nome"));
+                                        usuario.setPerfil(perfil);
 
-                                    request.setAttribute("messages", messages);
-                                    dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
-                                    dispatcher.forward(request, response);
+                                        daoUsuario.update(usuario);
+
+                                        response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                                    } else {
+                                        //TODO tratar erro
+                                        messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+
+                                        request.setAttribute("messages", messages);
+                                        dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
+                                        dispatcher.forward(request, response);
+                                    }
                                 }
                             }
                         }
