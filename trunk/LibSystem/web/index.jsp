@@ -5,6 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (usuario != null){
+    response.sendRedirect("Usuario?op=view&idUsuario="+usuario.getId());
+}
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +23,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="jumbotron">
-                        <h1>Hello, world!</h1>
+                        <h1>Columbus SGB</h1>
                         <p>
                             O sistema Columbus&TRADE; permite uma completa manipulação e controle de bibliotecas ou acervos literários e artísticos.
                         </p>

@@ -8,8 +8,9 @@
 <%@page import="model.Emprestimo"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%List<Emprestimo> emprestimos = (List<Emprestimo>) request.getAttribute("emprestimos"); 
-    if (emprestimos == null){
+<%List<Emprestimo> emprestimos = (List<Emprestimo>) request.getAttribute("emprestimos");
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (emprestimos == null || usuario == null){
         response.sendError(404);
     }
 %>
@@ -116,9 +117,9 @@
                     </thead>
                     <tbody>
                         <%for(Emprestimo emprestimo : emprestimos){ %>
-                        <tr data-rowlink-href="Emprestimo?op=view&idEmprestimo=">
+                        <tr data-rowlink-href="Emprestimo?op=view&idEmprestimo=<%=emprestimo.getId()%>">
                             <td><%=emprestimo.getId()%></td>
-                            <td><%=emprestimo.getUsuario().getNome()%></td>
+                            <td>Nome</td>
                             <td><%=emprestimo.getExemplar().getObra().getTitulo()%></td>
                         </tr>
                         <%} %>

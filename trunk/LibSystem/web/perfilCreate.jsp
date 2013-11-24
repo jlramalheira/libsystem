@@ -6,6 +6,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (usuario == null){
+    response.sendError(404);
+}
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,7 +49,17 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="quantidade-emprestimo">Quantidade de empréstimo disponível</label>
+                                <div class="input-group">                                    
+                                    <input type="number" name="quantidade-emprestimo" value="1"
+                                           id="quantidade-reserva" class="form-control"
+                                           min="1"/>
+                                    <span class="input-group-addon">dias</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="form-group col-lg-4">
                                 <label for="tempo-reserva">Tempo de reserva disponível</label>

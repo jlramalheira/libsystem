@@ -1,3 +1,4 @@
+<%@page import="model.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <header>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -14,17 +15,23 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <%if (usuario != null) {%>
             <ul class="nav navbar-nav">
-                <li><a href="Usuario?op=list">Usuários</a></li>
+                <%if (usuario.getPerfil().hasAcessoUsuario()) {%>
+                    <li><a href="Usuario?op=list">Usuários</a></li>
+                <%}%>
                 <li><a href="Obra?op=list">Obras</a></li>
                 <li><a href="Emprestimo?op=list">Empréstimos</a></li>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="Usuario?op=view&id=#"><span class="glyphicon glyphicon-user"></span> Nome do Usuário</a></li>
+                <li><a href="Usuario?op=view&id=#"><span class="glyphicon glyphicon-user"></span> <%=usuario.getNome()%></a></li>
                 <li><a href="Usuario?op=loggout">Sair</a></li>
-
             </ul>
+            <%} else {%>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="Usuario?op=login">Entrar</a></li>
+            </ul>
+            <%}%>
         </div><!-- /.navbar-collapse -->
     </nav>
 </header>

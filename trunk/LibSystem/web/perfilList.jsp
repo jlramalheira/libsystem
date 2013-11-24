@@ -9,7 +9,8 @@
 <%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%List<Perfil> perfis = (List<Perfil>) request.getAttribute("perfis");
-    if (perfis == null) {
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (perfis == null || usuario == null) {
         response.sendError(404);
     }
 %>

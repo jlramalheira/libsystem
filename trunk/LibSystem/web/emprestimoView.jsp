@@ -9,12 +9,13 @@
 <%@page import="model.Emprestimo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%Emprestimo emprestimo = (Emprestimo) request.getAttribute("emprestimo");
-    if (emprestimo == null) {
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (emprestimo == null || usuario == null) {
         response.sendError(404);
     }
 %>
 <!DOCTYPE html>
-<html>%
+<html>
     <head>
         <%@include file="interfaceHead.jsp" %>
     </head>
@@ -74,28 +75,32 @@
                                 </tr>
                                 <tr>
                                     <th>Data da devolução</th>
-                                    <td><%=emprestimo.getDevolucao().getDataDevolucao() == null ? "Não devolvido" : FormatDate.dateToString(emprestimo.getDevolucao().getDataDevolucao()) %></td>
+                                    <td><%=emprestimo.getDevolucao().getDataDevolucao() == null ? "Não devolvido" : FormatDate.dateToString(emprestimo.getDevolucao().getDataDevolucao())%></td>
                                 </tr>
                                 <tr>
                                     <th>Débito</th>
-                                    <td>R$ <%=emprestimo.getDevolucao().getDebito() != null ? emprestimo.getDevolucao().getDebito().getValor() : "0,00"%></td>
+                                    <td>R$ <%=emprestimo.getDevolucao().getDebito() != null ? emprestimo.getDevolucao().getDebito().getValor() : "-"%></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <a href="Devolucao?op=create&idEmprestimo=#" 
+                        <%if (emprestimo.getDevolucao().getStatus() != Devolucao.DEVOLVIDO) {%>
+                        <a href="Devolucao?op=create&idEmprestimo=<%=emprestimo.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
                             Realizar devolução
                         </a>
-                        <a href="Emprestimo?op=renovar&id=#" 
+
+                        <a href="Emprestimo?op=renovar&idEmprestimo=<%=emprestimo.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Renovar empréstimo
                         </a>
-                        <a href="Emprestimo?op=receber&id=#" 
+                        <%} else if ((emprestimo.getDevolucao().getDebito() != null) && (emprestimo.getDevolucao().getDebito().getValor() > 0)){%>
+                        <a href="Emprestimo?op=receber&idEmprestimo=<%=emprestimo.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Receber débito
                         </a>
+                        <%}%>
                     </div>
                 </div>
 

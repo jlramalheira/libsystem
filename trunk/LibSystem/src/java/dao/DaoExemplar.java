@@ -25,14 +25,14 @@ public class DaoExemplar extends Dao<Exemplar>{
                 .getResultList();
     }
     
-    public int getExemplares(Obra obra){
+    public int getNumeroExemplares(Obra obra){
         criteria = newCriteria();
         return criteria
                 .andEquals("obra", obra)
                 .getResultList().size();
     }
     
-    public int getExemplaresByStatus(Obra obra, int status){
+    public int getNumeroExemplaresByStatus(Obra obra, int status){
         criteria = newCriteria();
         return criteria
                 .andEquals("obra", obra)

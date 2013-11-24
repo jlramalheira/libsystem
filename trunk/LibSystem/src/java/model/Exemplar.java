@@ -19,8 +19,7 @@ import javax.persistence.ManyToOne;
 public class Exemplar implements Serializable {
     
     public static final int EMPRESTADO = 0;
-    public static final int RESERVADO = 1;
-    public static final int DISPONIVEL = 2;
+    public static final int DISPONIVEL = 1;
     
     private static final long serialVersionUID = 1L;
     @Id

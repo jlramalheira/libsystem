@@ -10,7 +10,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     List<Obra> obras = (List<Obra>) request.getAttribute("obras");
-    if (obras == null) {
+     Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (obras == null || usuario == null) {
         response.sendError(404);
     }
 %>

@@ -125,6 +125,7 @@ public class ServletPerfil extends HttpServlet {
 
                     perfil.setNome(request.getParameter("nome"));
                     perfil.setDiasEmprestimo(Integer.parseInt(request.getParameter("tempo-emprestimo")));
+                    perfil.setQuantidadeEmprestimos(Integer.parseInt(request.getParameter("quantidade-emprestimo")));
                     perfil.setDiasReserva(Integer.parseInt(request.getParameter("tempo-reserva")));
                     perfil.setQuantidadeReservas(Integer.parseInt(request.getParameter("quantidade-reserva")));
                     

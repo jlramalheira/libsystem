@@ -11,7 +11,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 List<Obra> obras = (List<Obra>) request.getAttribute("obras");
-if (obras == null){
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (obras == null || usuario == null){
     response.sendError(404);
 }
 %>
@@ -107,7 +108,7 @@ if (obras == null){
                             <td><%=obra.getTitulo()%></td>
                             <td><%=obra.getAutor()%></td>
                             <td><%=obra.getCategoria().valor()%></td>
-                            <td><%=obra.getExemplares()%></td>
+                            <td><%=obra.getNumeroExemplares()%></td>
                         </tr>
                         <%}%>
                     </tbody>

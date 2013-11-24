@@ -10,7 +10,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 List<Reserva> reservas = (List<Reserva>)request.getAttribute("reservas");
-if (reservas == null){
+ Usuario usuario = (Usuario) session.getAttribute("usuario");
+if (reservas == null || usuario == null){
     response.sendError(404);
 }
 %>

@@ -223,7 +223,7 @@ public class ServletObra extends HttpServlet {
 
                         int numeroExemplaresUpdate = Integer.parseInt(request.getParameter("exemplares"));
 
-                        if (numeroExemplaresUpdate <= obra.getExemplares(Exemplar.EMPRESTADO)) {
+                        if (numeroExemplaresUpdate <= obra.getNumeroExemplares(Exemplar.EMPRESTADO)) {
                             messages.add(new Message("Impossível excluir exemplares emprestados!", Message.TYPE_ERROR));
 
                             request.setAttribute("messages", messages);
@@ -232,8 +232,8 @@ public class ServletObra extends HttpServlet {
                             dispatcher = request.getRequestDispatcher("obraUpdate.jsp");
                             dispatcher.forward(request, response);
                         } else {
-                            if (numeroExemplaresUpdate > obra.getExemplares()) {
-                                for (int i = 0; i <= (numeroExemplaresUpdate - obra.getExemplares() + 1); i++) {
+                            if (numeroExemplaresUpdate > obra.getNumeroExemplares()) {
+                                for (int i = 0; i <= (numeroExemplaresUpdate - obra.getNumeroExemplares() + 1); i++) {
                                     exemplar = new Exemplar();
                                     exemplar.setObra(obra);
                                     exemplar.setStatus(Exemplar.DISPONIVEL);
@@ -241,7 +241,7 @@ public class ServletObra extends HttpServlet {
                                 }
                             } else {
                                 List<Exemplar> exemplares = daoExemplar.listByObraAndStatus(obra, Exemplar.DISPONIVEL);
-                                for (int i = 1; i <= (obra.getExemplares() - numeroExemplaresUpdate + 1); i++) {
+                                for (int i = 1; i <= (obra.getNumeroExemplares() - numeroExemplaresUpdate + 1); i++) {
                                     daoExemplar.remove(exemplares.get(i - 1).getId());
                                 }
                             }

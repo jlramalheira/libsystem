@@ -7,6 +7,7 @@ package util;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  *
@@ -27,5 +28,12 @@ public class Util {
         sen = hash.toString(16);
         System.out.println(sen);
         return sen;
+    }
+    
+    public static String geraSenhaAleatoria() {
+        UUID uuid = UUID.randomUUID();
+        String myRandom = uuid.toString();
+        String senhaAleatoria = myRandom.substring(0, 8);
+        return senhaAleatoria;
     }
 }

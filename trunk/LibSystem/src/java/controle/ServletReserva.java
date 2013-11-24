@@ -43,7 +43,9 @@ public class ServletReserva extends HttpServlet {
         daoReserva = new DaoReserva();
         messages = new ArrayList<>();
 
-        if (action == null) {
+        HttpSession session = request.getSession(true);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (action == null || usuario == null) {
             response.sendError(404);
         } else {
             Long idReserva;
@@ -119,7 +121,12 @@ public class ServletReserva extends HttpServlet {
                     }
                     break;
                 case "list":
-                    List<Reserva> reservas = daoReserva.list();
+                    List<Reserva> reservas = null;
+                    if (usuario.getPerfil().hasAcessoReserva()){
+                        reservas = daoReserva.list();
+                    } else {
+                        reservas = daoReserva.listByUsuario(usuario);
+                    }
 
                     request.setAttribute("reservas", reservas);
 

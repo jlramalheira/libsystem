@@ -26,24 +26,44 @@ public class DaoReserva extends Dao<Reserva> {
                 .andEquals("usuario", usuario)
                 .getResultList();
     }
-    
+
     public List<Reserva> listByObra(Obra obra) {
         criteria = newCriteria();
         return criteria
                 .andEquals("obra", obra)
                 .getResultList();
     }
-    
-    public Reserva getNextReserva(Obra obra){
+
+    public Reserva getNextReserva(Obra obra) {
         criteria = newCriteria();
         List<Reserva> reservas = criteria
                 .andEquals("obra", obra)
                 .orderByAsc("diaReserva")
                 .getResultList();
-        if (reservas.size() > 2){
+        if (reservas.size() > 1) {
             return reservas.get(1);
         }
         return null;
+    }
+
+    public Reserva getFirstReserva(Obra obra) {
+        criteria = newCriteria();
+        List<Reserva> reservas = criteria
+                .andEquals("obra", obra)
+                .orderByAsc("diaReserva")
+                .getResultList();
+        if (reservas.size() > 0) {
+            return reservas.get(0);
+        }
+        return null;
+    }
+
+    public int getNumeroByObra(Obra obra) {
+        criteria = newCriteria();
+        return criteria
+                .andEquals("obra", obra)
+                .getResultList()
+                .size();
     }
 
     public List<Reserva> listByUsuarioObra(Usuario usuario, Obra obra) {
@@ -53,11 +73,12 @@ public class DaoReserva extends Dao<Reserva> {
                 .andEquals("obra", obra)
                 .getResultList();
     }
-    
+
     public List<Reserva> listByTituloobra(String titulo) {
-        return em.createQuery("SELECT r FROM Reserva r WHERE r.obra.titulo LIKE '%"+titulo+"%'").getResultList();
+        return em.createQuery("SELECT r FROM Reserva r WHERE r.obra.titulo LIKE '%" + titulo + "%'").getResultList();
     }
+
     public List<Reserva> listByTituloobraStatus(String titulo, int status) {
-        return em.createQuery("SELECT r FROM Reserva r WHERE r.obra.titulo LIKE '%"+titulo+"%' AND r.status = "+status).getResultList();
+        return em.createQuery("SELECT r FROM Reserva r WHERE r.obra.titulo LIKE '%" + titulo + "%' AND r.status = " + status).getResultList();
     }
 }
