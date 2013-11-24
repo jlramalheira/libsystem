@@ -73,6 +73,18 @@ public class DaoReserva extends Dao<Reserva> {
                 .andEquals("obra", obra)
                 .getResultList();
     }
+    
+    public Reserva getByUsuarioObra(Usuario usuario, Obra obra) {
+        criteria = newCriteria();
+        List<Reserva> reservas =  criteria
+                .andEquals("usuario", usuario)
+                .andEquals("obra", obra)
+                .getResultList();
+        if (!reservas.isEmpty()){
+            return reservas.get(0);
+        }
+        return null;
+    }
 
     public List<Reserva> listByTituloobra(String titulo) {
         return em.createQuery("SELECT r FROM Reserva r WHERE r.obra.titulo LIKE '%" + titulo + "%'").getResultList();

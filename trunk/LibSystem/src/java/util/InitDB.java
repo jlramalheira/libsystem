@@ -6,7 +6,6 @@ package util;
 
 import dao.DaoPerfil;
 import dao.DaoUsuario;
-import java.util.Date;
 import model.Perfil;
 import model.Usuario;
 
@@ -38,5 +37,6 @@ public class InitDB {
         usuario.setPerfil(perfil);
         
         new DaoUsuario().insert(usuario);
+        
     }
 }

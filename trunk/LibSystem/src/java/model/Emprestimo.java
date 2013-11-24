@@ -77,6 +77,13 @@ public class Emprestimo implements Serializable {
         calendar.add(Calendar.DAY_OF_MONTH, dias);
         this.dataDevolucaoPrevista = calendar.getTime();
     }
+    
+    public void setDataDevolucaoPrevistaRenovacao(int dias) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(Calendar.getInstance().getTime());
+        calendar.add(Calendar.DAY_OF_MONTH, dias);
+        this.dataDevolucaoPrevista = calendar.getTime();
+    }
 
     public Devolucao getDevolucao() {
         return devolucao;

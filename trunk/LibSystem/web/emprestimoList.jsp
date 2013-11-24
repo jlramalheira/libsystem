@@ -119,7 +119,7 @@
                         <%for(Emprestimo emprestimo : emprestimos){ %>
                         <tr data-rowlink-href="Emprestimo?op=view&idEmprestimo=<%=emprestimo.getId()%>">
                             <td><%=emprestimo.getId()%></td>
-                            <td>Nome</td>
+                            <td><%=emprestimo.getUsuario().getNome()%></td>
                             <td><%=emprestimo.getExemplar().getObra().getTitulo()%></td>
                         </tr>
                         <%} %>

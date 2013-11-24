@@ -44,6 +44,7 @@ public class ServletPerfil extends HttpServlet {
             response.sendError(404);
         } else {
             Long idPerfil;
+            try{
             switch (action) {
                 case "create":
                     dispatcher = request.getRequestDispatcher("perfilCreate.jsp");
@@ -103,6 +104,12 @@ public class ServletPerfil extends HttpServlet {
                     dispatcher.forward(request, response);
                 default:
                     response.sendError(404);
+            }
+            } catch (NumberFormatException ne){
+                //TODO enviar mensagem?
+                response.sendError(404);
+            } catch (NullPointerException npe){
+                response.sendError(404);
             }
         }
     }
