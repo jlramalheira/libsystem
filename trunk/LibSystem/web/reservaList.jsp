@@ -74,7 +74,7 @@ if (reservas == null || usuario == null){
                         <tr data-rowlink-href="Reserva?op=view&idReserva=<%=reserva.getId()%>">
                             <td><%=reserva.getId()%></td>
                             <td><%=reserva.getObra().getTitulo()%></td>
-                            <td><%="Usuario"%></td>
+                            <td><%=reserva.getUsuario().getNome() %></td>
                             <td>
                                         <%switch (reserva.getStatus()) {
                                                 case Reserva.AGUARDANDO:%>

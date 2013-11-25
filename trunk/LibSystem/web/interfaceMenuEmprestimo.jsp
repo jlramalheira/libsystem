@@ -9,12 +9,12 @@
         <%}%>
         <a href="Emprestimo?op=list" class="list-group-item">Listar empréstimos</a>
 
+        <%if (usuario.getPerfil().hasAcessoReserva()) {%>
         <div class="list-group-item">
             <h4>Reserva</h4>
         </div>
-        <%if (usuario.getPerfil().hasAcessoReserva()) {%>
         <a href="Reserva?op=create" class="list-group-item">Nova reserva</a>
-        <%}%>
         <a href="Reserva?op=list" class="list-group-item">Listar reservas</a>
+        <%}%>
     </div>
 </aside>

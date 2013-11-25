@@ -5,12 +5,13 @@
     Description:
 --%>
 
+<%@page import="model.Devolucao"%>
 <%@page import="model.Emprestimo"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%List<Emprestimo> emprestimos = (List<Emprestimo>) request.getAttribute("emprestimos");
- Usuario usuario = (Usuario) session.getAttribute("usuario");
-    if (emprestimos == null || usuario == null){
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (emprestimos == null || usuario == null) {
         response.sendError(404);
     }
 %>
@@ -85,18 +86,19 @@
                                            id="data-devolucao-prevista-fim" class="form-control"/>
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label for="status">Status da devolução</label>
-                                    <select class="form-control">
-                                        <option value="<%= Emprestimo.NORMAL %>">Normal</option>
-                                        <option value="<%= Emprestimo.DEVOLVIDO %>">Devolvido</option>
-                                        <option value="<%= Emprestimo.ATRASADO %>">Atrasado</option>
+                                    <select class="form-control" name="status" id="status">
+                                        <option value="-1">Selecione</option>
+                                        <option value="<%= Emprestimo.NORMAL%>">Normal</option>
+                                        <option value="<%= Emprestimo.DEVOLVIDO%>">Devolvido</option>
+                                        <option value="<%= Emprestimo.ATRASADO%>">Atrasado</option>
                                     </select>
                                 </div>
                             </div>
-                            
+
                         </fieldset>
                     </div>
                     <button type="submit" name="op" value="search" 
@@ -107,22 +109,35 @@
                             class="btn btn-lg btn-default">Mais opções</button>
                 </form>
                 <hr/>
-                <%if (!emprestimos.isEmpty()){ %>
+                <%if (!emprestimos.isEmpty()) {%>
                 <table data-rowlink class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>#ID</th>
                             <th>Usuário</th>
                             <th>Obra</th>
+                            <th>Status</th>
                     </thead>
                     <tbody>
-                        <%for(Emprestimo emprestimo : emprestimos){ %>
+                        <%for (Emprestimo emprestimo : emprestimos) {%>
                         <tr data-rowlink-href="Emprestimo?op=view&idEmprestimo=<%=emprestimo.getId()%>">
                             <td><%=emprestimo.getId()%></td>
                             <td><%=emprestimo.getUsuario().getNome()%></td>
                             <td><%=emprestimo.getExemplar().getObra().getTitulo()%></td>
+                            <td><%switch (emprestimo.getDevolucao().getStatus()) {
+                                    case Devolucao.NORMAL:%>
+
+                                <span class="label label-info">Normal</span>
+                                <% break;
+                                            case Devolucao.DEVOLVIDO:%>
+                                <span class="label label-success">Devolvido</span>
+                                <% break;
+                                            case Devolucao.ATRASADO:%>
+                                <span class="label label-warning">Atrasado</span>
+                                <%}%>
+                            </td>
                         </tr>
-                        <%} %>
+                        <%}%>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -130,7 +145,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <%} else { %>
+                <%} else {%>
                 <h3>Nenhum Emprestimo encontrado!</h3>
                 <% }%>
             </div>

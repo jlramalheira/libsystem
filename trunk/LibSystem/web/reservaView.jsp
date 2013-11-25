@@ -4,6 +4,7 @@
     Author     : max
     Description:
 --%>
+<%@page import="util.FormatDate"%>
 <%@page import="model.Reserva"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -58,12 +59,12 @@
                                 <%if (reserva.getStatus() == Reserva.DISPONIVEL){ %>
                                 <tr>
                                     <th>Expira em</th>
-                                    <td>08/08/2008</td>
+                                    <td><%=FormatDate.dateToString(reserva.getDiaDisponivel())%></td>
                                 </tr>
                                 <%} else if(reserva.getStatus() == Reserva.EXPIRADA){%>
                                 <tr>
                                     <th>Expirada em</th>
-                                    <td>08/08/2008</td>
+                                    <td><%=FormatDate.dateToString(reserva.getDiaDisponivel())%></td>
                                 </tr>
                                 <%}%>
                             </tbody>
