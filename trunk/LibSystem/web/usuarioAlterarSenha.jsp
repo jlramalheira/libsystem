@@ -7,8 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
-    if (usuario != null) {
-        response.sendRedirect("Usuario?op=view&idUsuario=" + usuario.getId());
+    if (usuario == null) {
+        response.sendError(404);
     }
 %>
 <!DOCTYPE html>
