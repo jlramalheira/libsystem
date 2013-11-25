@@ -46,6 +46,7 @@ public class ServletDevolucao extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         action = request.getParameter("op");
         daoDevolucao = new DaoDevolucao();
+        try {
         if (action == null) {
             response.sendError(404);
         } else {
@@ -92,39 +93,23 @@ public class ServletDevolucao extends HttpServlet {
                         response.sendRedirect("Emprestimo?op=view&returned=true&idEmprestimo="+emprestimo.getId());
                     }
                     break;
-                case "update":
-                    break;
-                case "delete":
-                    break;
-                case "view":
-                    break;
                 default:
                     response.sendError(404);
             }
+        }
+        } catch (NumberFormatException ne) {
+            response.sendError(404);
+        } catch (NullPointerException np) {
+            response.sendError(404);
+        } catch (Exception ex) {
+            response.sendError(404);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        action = request.getParameter("op");
-        if (action == null) {
-            response.sendError(404);
-        } else {
-            Long idDevolucao;
-            switch (action) {
-                case "create":
-                    break;
-                case "update":
-                    break;
-                case "delete":
-                    break;
-                case "view":
-                    break;
-                default:
-                    response.sendError(404);
-            }
-        }
+        
     }
 
     @Override

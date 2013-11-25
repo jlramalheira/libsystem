@@ -5,6 +5,7 @@
 package controle;
 
 import dao.DaoPerfil;
+import dao.DaoUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Perfil;
+import model.Usuario;
 import util.Message;
 
 /**
@@ -39,78 +41,104 @@ public class ServletPerfil extends HttpServlet {
         daoPerfil = new DaoPerfil();
         messages = new ArrayList<>();
 
-
-        if (action == null) {
-            response.sendError(404);
-        } else {
-            Long idPerfil;
-            try{
-            switch (action) {
-                case "create":
-                    dispatcher = request.getRequestDispatcher("perfilCreate.jsp");
-                    dispatcher.forward(request, response);
-                    break;
-                case "update":
-                    idPerfil = Long.parseLong(request.getParameter("idPerfil"));
-
-                    perfil = daoPerfil.get(idPerfil);
-
-                    if (perfil == null) {
-                        response.sendError(404);
-                    } else {
-                        request.setAttribute("perfil", perfil);
-
-                        dispatcher = request.getRequestDispatcher("perfilUpdate.jsp");
+        try {
+            if (action == null) {
+                response.sendError(404);
+            } else {
+                Long idPerfil;
+                switch (action) {
+                    case "create":
+                        dispatcher = request.getRequestDispatcher("perfilCreate.jsp");
                         dispatcher.forward(request, response);
-                    }
-                    break;
-                case "delete":
-                    break;
-                case "view":
-                    idPerfil = Long.parseLong(request.getParameter("idPerfil"));
+                        break;
+                    case "update":
+                        idPerfil = Long.parseLong(request.getParameter("idPerfil"));
 
-                    perfil = daoPerfil.get(idPerfil);
+                        perfil = daoPerfil.get(idPerfil);
 
-                    if (perfil == null) {
-                        response.sendError(404);
-                    } else {
-                        if (request.getParameter("new") != null) {
-                            messages.add(new Message("Perfil cadastrado com sucesso!", Message.TYPE_SUCCESS));
-                        } else if (request.getParameter("update") != null) {
-                            messages.add(new Message("Perfil editado com sucesso!", Message.TYPE_SUCCESS));
+                        if (perfil == null) {
+                            response.sendError(404);
+                        } else {
+                            request.setAttribute("perfil", perfil);
+
+                            dispatcher = request.getRequestDispatcher("perfilUpdate.jsp");
+                            dispatcher.forward(request, response);
                         }
+                        break;
+                    case "delete":
+                        idPerfil = Long.parseLong(request.getParameter("idPerfil"));
 
-                        request.setAttribute("perfil", perfil);
-                        request.setAttribute("messages", messages);
+                        perfil = daoPerfil.get(idPerfil);
 
-                        dispatcher = request.getRequestDispatcher("perfilView.jsp");
+                        if (perfil == null) {
+                            response.sendError(404);
+                        } else {
+                            DaoUsuario daoUsuario = new DaoUsuario();
+                            List<Usuario> usuarios = daoUsuario.listByPerfil(perfil);
+
+                            List<Perfil> perfis = daoPerfil.list();
+                            for (Usuario usuario : usuarios) {
+                                usuario.setPerfil(perfis.get(perfis.size() - 1));
+                                daoUsuario.update(usuario);
+                            }
+
+                            messages.add(new Message("Perfil Excluido com sucesso! Todos os usuários dele passaram para o perfil " + perfis.get(perfis.size() - 1).getNome(), Message.TYPE_SUCCESS));
+
+                            request.setAttribute("message", messages);
+
+                            request.setAttribute("perfis", perfis);
+
+                            dispatcher = request.getRequestDispatcher("perfilList.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                        break;
+                    case "view":
+                        idPerfil = Long.parseLong(request.getParameter("idPerfil"));
+
+                        perfil = daoPerfil.get(idPerfil);
+
+                        if (perfil == null) {
+                            response.sendError(404);
+                        } else {
+                            if (request.getParameter("new") != null) {
+                                messages.add(new Message("Perfil cadastrado com sucesso!", Message.TYPE_SUCCESS));
+                            } else if (request.getParameter("update") != null) {
+                                messages.add(new Message("Perfil editado com sucesso!", Message.TYPE_SUCCESS));
+                            }
+
+                            request.setAttribute("perfil", perfil);
+                            request.setAttribute("messages", messages);
+
+                            dispatcher = request.getRequestDispatcher("perfilView.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                        break;
+                    case "search":
+                        List<Perfil> perfisSearch = daoPerfil.listByNome(request.getParameter("nome"));
+
+                        request.setAttribute("perfis", perfisSearch);
+
+                        dispatcher = request.getRequestDispatcher("perfilList.jsp");
                         dispatcher.forward(request, response);
-                    }
-                    break;
-                case "search":
-                    List<Perfil> perfisSearch = daoPerfil.listByNome(request.getParameter("nome"));
-                    
-                    request.setAttribute("perfis", perfisSearch);
+                        break;
+                    case "list":
+                        List<Perfil> perfis = daoPerfil.list();
 
-                    dispatcher = request.getRequestDispatcher("perfilList.jsp");
-                    dispatcher.forward(request, response);
-                    break;
-                case "list":
-                    List<Perfil> perfis = daoPerfil.list();
+                        request.setAttribute("perfis", perfis);
 
-                    request.setAttribute("perfis", perfis);
-
-                    dispatcher = request.getRequestDispatcher("perfilList.jsp");
-                    dispatcher.forward(request, response);
-                default:
-                    response.sendError(404);
+                        dispatcher = request.getRequestDispatcher("perfilList.jsp");
+                        dispatcher.forward(request, response);
+                    default:
+                        response.sendError(404);
+                }
             }
-            } catch (NumberFormatException ne){
-                //TODO enviar mensagem?
-                response.sendError(404);
-            } catch (NullPointerException npe){
-                response.sendError(404);
-            }
+
+        } catch (NumberFormatException ne) {
+            response.sendError(404);
+        } catch (NullPointerException np) {
+            response.sendError(404);
+        } catch (Exception ex) {
+            response.sendError(404);
         }
     }
 
@@ -121,60 +149,68 @@ public class ServletPerfil extends HttpServlet {
         action = request.getParameter("op");
         daoPerfil = new DaoPerfil();
 
-        System.out.println(action);
-        if (action == null) {
-            response.sendError(404);
-        } else {
-            Long idPerfil;
-            switch (action) {
-                case "create":
-                    perfil = new Perfil();
+        try {
+            System.out.println(action);
+            if (action == null) {
+                response.sendError(404);
+            } else {
+                Long idPerfil;
+                switch (action) {
+                    case "create":
+                        perfil = new Perfil();
 
-                    perfil.setNome(request.getParameter("nome"));
-                    perfil.setDiasEmprestimo(Integer.parseInt(request.getParameter("tempo-emprestimo")));
-                    perfil.setQuantidadeEmprestimos(Integer.parseInt(request.getParameter("quantidade-emprestimo")));
-                    perfil.setDiasReserva(Integer.parseInt(request.getParameter("tempo-reserva")));
-                    perfil.setQuantidadeReservas(Integer.parseInt(request.getParameter("quantidade-reserva")));
-                    
-                    if (request.getParameter("gerenciar-perfil") != null){
-                        perfil.setAcessoPerfil(true);
-                    }
-                    if (request.getParameter("gerenciar-usuario") != null){
-                        perfil.setAcessoUsuario(true);
-                    }
-                    if (request.getParameter("gerenciar-obras") != null){
-                        perfil.setAcessoObra(true);
-                    }
-                    if (request.getParameter("gerenciar-emprestimos") != null){
-                        perfil.setAcessoEmprestimo(true);
-                    }
-                    if (request.getParameter("gerenciar-reservas") != null){
-                        perfil.setAcessoReserva(true);
-                    }
-                    
-                    daoPerfil.insert(perfil);
-                    response.sendRedirect("Perfil?op=view&new=true&idPerfil=" + perfil.getId());
-                    break;
-                case "update":
-                    idPerfil = Long.parseLong(request.getParameter("idPerfil"));
-
-                    perfil = daoPerfil.get(idPerfil);
-
-                    if (perfil == null) {
-                        response.sendError(404);
-                    } else {
                         perfil.setNome(request.getParameter("nome"));
+                        perfil.setDiasEmprestimo(Integer.parseInt(request.getParameter("tempo-emprestimo")));
+                        perfil.setQuantidadeEmprestimos(Integer.parseInt(request.getParameter("quantidade-emprestimo")));
+                        perfil.setDiasReserva(Integer.parseInt(request.getParameter("tempo-reserva")));
+                        perfil.setQuantidadeReservas(Integer.parseInt(request.getParameter("quantidade-reserva")));
 
-                        daoPerfil.update(perfil);
-                        response.sendRedirect("Perfil?op=view&update=true&idPerfil=" + perfil.getId());
-                    }
+                        if (request.getParameter("gerenciar-perfil") != null) {
+                            perfil.setAcessoPerfil(true);
+                        }
+                        if (request.getParameter("gerenciar-usuario") != null) {
+                            perfil.setAcessoUsuario(true);
+                        }
+                        if (request.getParameter("gerenciar-obras") != null) {
+                            perfil.setAcessoObra(true);
+                        }
+                        if (request.getParameter("gerenciar-emprestimos") != null) {
+                            perfil.setAcessoEmprestimo(true);
+                        }
+                        if (request.getParameter("gerenciar-reservas") != null) {
+                            perfil.setAcessoReserva(true);
+                        }
 
-                    break;
-                case "delete":
-                    break;
-                default:
-                    response.sendError(404);
+                        daoPerfil.insert(perfil);
+                        response.sendRedirect("Perfil?op=view&new=true&idPerfil=" + perfil.getId());
+                        break;
+                    case "update":
+                        idPerfil = Long.parseLong(request.getParameter("idPerfil"));
+
+                        perfil = daoPerfil.get(idPerfil);
+
+                        if (perfil == null) {
+                            response.sendError(404);
+                        } else {
+                            perfil.setNome(request.getParameter("nome"));
+
+                            daoPerfil.update(perfil);
+                            response.sendRedirect("Perfil?op=view&update=true&idPerfil=" + perfil.getId());
+                        }
+
+                        break;
+                    case "delete":
+                        break;
+                    default:
+                        response.sendError(404);
+                }
             }
+        } catch (NumberFormatException ne) {
+            response.sendError(404);
+        } catch (NullPointerException np) {
+            response.sendError(404);
+        } catch (Exception ex) {
+            response.sendError(404);
         }
     }
 

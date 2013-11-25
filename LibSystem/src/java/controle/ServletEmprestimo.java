@@ -52,6 +52,7 @@ public class ServletEmprestimo extends HttpServlet {
         daoEmprestimo = new DaoEmprestimo();
         messages = new ArrayList<>();
 
+        try{
         HttpSession session = request.getSession(true);
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (action == null || usuario == null) {
@@ -66,10 +67,6 @@ public class ServletEmprestimo extends HttpServlet {
 
                     dispatcher = request.getRequestDispatcher("emprestimoCreate.jsp");
                     dispatcher.forward(request, response);
-                    break;
-                case "update":
-                    break;
-                case "delete":
                     break;
                 case "view":
                     idEmprestimo = Long.parseLong(request.getParameter("idEmprestimo"));
@@ -185,6 +182,13 @@ public class ServletEmprestimo extends HttpServlet {
                     response.sendError(404);
             }
         }
+        } catch (NumberFormatException ne) {
+            response.sendError(404);
+        } catch (NullPointerException np) {
+            response.sendError(404);
+        } catch (Exception ex) {
+            response.sendError(404);
+        }
     }
 
     @Override
@@ -194,7 +198,7 @@ public class ServletEmprestimo extends HttpServlet {
         action = request.getParameter("op");
         daoEmprestimo = new DaoEmprestimo();
         messages = new ArrayList<>();
-
+        
         HttpSession session = request.getSession(true);
 
         try {
@@ -308,12 +312,6 @@ public class ServletEmprestimo extends HttpServlet {
                             dispatcher.forward(request, response);
                         }
                     }
-                    break;
-                case "update":
-                    break;
-                case "delete":
-                    break;
-                case "view":
                     break;
                 default:
                     response.sendError(404);
