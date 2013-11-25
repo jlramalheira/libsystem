@@ -8,7 +8,7 @@
 <%@page import="model.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%Usuario usuarioView = (Usuario) request.getAttribute("usuario");
-Usuario usuario = (Usuario) session.getAttribute("usuario");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
     if (usuarioView == null || usuario == null) {
         response.sendError(404);
     }
@@ -49,7 +49,11 @@ Usuario usuario = (Usuario) session.getAttribute("usuario");
                         <a href="Usuario?op=update&idUsuario=<%=usuarioView.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
                             Editar dados
-                        </a>                  
+                        </a>
+                        <a href="Usuario?op=alterarSenha&idUsuario=<%=usuarioView.getId()%>" 
+                           class="btn btn-default btn-block btn-lg">
+                            Alterar senha
+                        </a>  
                     </div>
                 </div>
 
