@@ -62,8 +62,7 @@ public class ServletUsuario extends HttpServlet {
                     idUsuario = Long.parseLong(request.getParameter("idUsuario"));
 
                     usuario = daoUsuario.get(idUsuario);
-
-                    if (usuario == null || usuarioLogado != null) {
+                    if (usuario == null || usuarioLogado == null) {
                         response.sendError(404);
                     } else {
                         //Não pode editar dados de outro usuário
@@ -76,7 +75,9 @@ public class ServletUsuario extends HttpServlet {
                         dispatcher.forward(request, response);
                     }
                     break;
-                case "delete":
+                case "alterarSenha":
+                    dispatcher = request.getRequestDispatcher("usuarioAlterarSenha.jsp");
+                    dispatcher.forward(request, response);
                     break;
                 case "view":
                     idUsuario = Long.parseLong(request.getParameter("idUsuario"));
@@ -96,6 +97,8 @@ public class ServletUsuario extends HttpServlet {
                             messages.add(new Message("Usuário cadastrado com sucesso!", Message.TYPE_SUCCESS));
                         } else if (request.getParameter("update") != null) {
                             messages.add(new Message("Usuário editado com sucesso!", Message.TYPE_SUCCESS));
+                        } else if (request.getParameter("senha") != null) {
+                            messages.add(new Message("Senha alterada com sucesso!", Message.TYPE_SUCCESS));
                         }
 
                         request.setAttribute("messages", messages);
@@ -161,98 +164,92 @@ public class ServletUsuario extends HttpServlet {
         daoUsuario = new DaoUsuario();
         messages = new ArrayList<>();
 
-        HttpSession session = request.getSession(true);
-        Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
-        if (action == null) {
-            response.sendError(404);
-        } else {
-            Long idUsuario;
-            switch (action) {
-                case "create":
-                    usuario = new Usuario();
-                    try {
-                        Long idPerfil = Long.parseLong(request.getParameter("perfil"));
-                        Perfil perfil = new DaoPerfil().get(idPerfil);
+        try {
+            HttpSession session = request.getSession(true);
+            Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
+            if (action == null) {
+                response.sendError(404);
+            } else {
+                Long idUsuario;
+                switch (action) {
+                    case "create":
+                        usuario = new Usuario();
+                        try {
+                            Long idPerfil = Long.parseLong(request.getParameter("perfil"));
+                            Perfil perfil = new DaoPerfil().get(idPerfil);
 
-                        if (perfil == null) {
-                            throw new Exception();
-                        }
+                            if (perfil == null) {
+                                throw new Exception();
+                            }
 
-                        String login = request.getParameter("usuario");
-                        String email = request.getParameter("email");
+                            String login = request.getParameter("usuario");
+                            String email = request.getParameter("email");
 
-                        List<Usuario> usuarios = daoUsuario.listByEmail(email);
-
-                        if (usuarios.isEmpty()) {
-                            usuarios = daoUsuario.listByLogin(login);
+                            List<Usuario> usuarios = daoUsuario.listByEmail(email);
 
                             if (usuarios.isEmpty()) {
-                                usuario.setLogin(login);
-                                usuario.setEmail(email);
-                                usuario.setNome(request.getParameter("nome"));
-                                usuario.setSenha(Util.criptografarSenha(request.getParameter("senha")));
-                                usuario.setPerfil(perfil);
+                                usuarios = daoUsuario.listByLogin(login);
 
-                                daoUsuario.insert(usuario);
+                                if (usuarios.isEmpty()) {
+                                    usuario.setLogin(login);
+                                    usuario.setEmail(email);
+                                    usuario.setNome(request.getParameter("nome"));
+                                    usuario.setSenha(Util.criptografarSenha(request.getParameter("senha")));
+                                    usuario.setPerfil(perfil);
 
-                                Email.sendEmail(email, "Bem-vindo ao Columbus",
-                                        "Olá " + usuario.getNome() + "\n\n"
-                                        + "Seu cadastro foi efetuado com sucesso!\n\n"
-                                        + "Atenciosamente,\nColumbus");
-                                response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
+                                    daoUsuario.insert(usuario);
+
+                                    Email.sendEmail(email, "Bem-vindo ao Columbus",
+                                            "Olá " + usuario.getNome() + "\n\n"
+                                            + "Seu cadastro foi efetuado com sucesso!\n\n"
+                                            + "Atenciosamente,\nColumbus");
+                                    response.sendRedirect("Usuario?op=view&new=true&idUsuario=" + usuario.getId());
+                                } else {
+                                    messages.add(new Message("Login já cadastrado", Message.TYPE_ERROR));
+
+                                    request.setAttribute("messages", messages);
+                                    dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
+                                    dispatcher.forward(request, response);
+                                }
                             } else {
-                                messages.add(new Message("Login já cadastrado", Message.TYPE_ERROR));
+                                //TODO tratar erro
+                                messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
 
                                 request.setAttribute("messages", messages);
                                 dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
                                 dispatcher.forward(request, response);
                             }
-                        } else {
-                            //TODO tratar erro
-                            messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
 
-                            request.setAttribute("messages", messages);
-                            dispatcher = request.getRequestDispatcher("usuarioCreate.jsp");
-                            dispatcher.forward(request, response);
+                        } catch (Exception ex) {
+                            //TODO ver se tem outro erro possivel
+                            response.sendError(404);
                         }
+                        break;
+                    case "update":
+                        idUsuario = Long.parseLong(request.getParameter("idUsuario"));
 
-                    } catch (Exception ex) {
-                        //TODO ver se tem outro erro possivel
-                        response.sendError(404);
-                    }
-                    break;
-                case "update":
-                    idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+                        usuario = daoUsuario.get(idUsuario);
 
-                    usuario = daoUsuario.get(idUsuario);
-
-                    if (usuario == null) {
-                        response.sendError(404);
-                    } else {
-                        if (usuarioLogado.getId() != usuario.getId()) {
+                        if (usuario == null) {
                             response.sendError(404);
                         } else {
-                            Long idPerfil = Long.parseLong(request.getParameter("perfil"));
-                            Perfil perfil = new DaoPerfil().get(idPerfil);
-
-                            if (perfil == null) {
+                            if (usuarioLogado.getId() != usuario.getId()) {
                                 response.sendError(404);
                             } else {
-
-                                String email = request.getParameter("email");
-
-                                List<Usuario> usuarios = daoUsuario.listByEmail(email);
-
-                                if (usuarios.isEmpty()) {
-                                    usuario.setEmail(email);
-                                    usuario.setNome(request.getParameter("nome"));
-                                    usuario.setPerfil(perfil);
-
-                                    daoUsuario.update(usuario);
-
-                                    response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                                Perfil perfil = usuario.getPerfil();
+                                if (usuarioLogado.getPerfil().hasAcessoUsuario()) {
+                                    Long idPerfil = Long.parseLong(request.getParameter("perfil"));
+                                    perfil = new DaoPerfil().get(idPerfil);
+                                }
+                                if (perfil == null) {
+                                    response.sendError(404);
                                 } else {
-                                    if (usuarios.get(0).getEmail().equals(email)) {
+
+                                    String email = request.getParameter("email");
+
+                                    List<Usuario> usuarios = daoUsuario.listByEmail(email);
+
+                                    if (usuarios.isEmpty()) {
                                         usuario.setEmail(email);
                                         usuario.setNome(request.getParameter("nome"));
                                         usuario.setPerfil(perfil);
@@ -261,76 +258,114 @@ public class ServletUsuario extends HttpServlet {
 
                                         response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
                                     } else {
-                                        //TODO tratar erro
-                                        messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+                                        if (usuarios.get(0).getEmail().equals(email)) {
+                                            usuario.setEmail(email);
+                                            usuario.setNome(request.getParameter("nome"));
+                                            usuario.setPerfil(perfil);
 
-                                        request.setAttribute("messages", messages);
-                                        dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
-                                        dispatcher.forward(request, response);
+                                            daoUsuario.update(usuario);
+
+                                            response.sendRedirect("Usuario?op=view&update=true&idUsuario=" + usuario.getId());
+                                        } else {
+                                            messages.add(new Message("Email já cadastrado", Message.TYPE_ERROR));
+
+                                            request.setAttribute("messages", messages);
+                                            dispatcher = request.getRequestDispatcher("usuarioUpdate.jsp");
+                                            dispatcher.forward(request, response);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    break;
-                case "delete":
+                        break;
+                    case "alterarSenha":
+                        String senhaAntiga = request.getParameter("passwordOld");
+                        if (usuarioLogado.getSenha().equals(Util.criptografarSenha(senhaAntiga))) {
+                            String senhaNew = request.getParameter("passwordNew");
 
-                    break;
-                case "login":
-                    usuario = daoUsuario.getByLogin(request.getParameter("usuario"));
+                            usuarioLogado.setSenha(Util.criptografarSenha(senhaNew));
 
-                    if (usuario != null) {
-                        if (usuario.getSenha().equals(Util.criptografarSenha(request.getParameter("senha")))) {
-                            session.setAttribute("usuario", usuario);
+                            daoUsuario.update(usuarioLogado);
 
-                            response.sendRedirect("Usuario?op=view&recover=true&idUsuario=" + usuario.getId());
+                            String email = usuarioLogado.getEmail();
+                            Email.sendEmail(email, "Alteração Senha sistema Columbus",
+                                    "Olá " + usuario.getNome() + "\n\n"
+                                    + "Sua senha foi alterada para: " + senhaNew + "\n\n"
+                                    + "Atenciosamente,\nColumbus");
+
+                            response.sendRedirect("Usuario?op=view&senha=true&idUsuario=" + usuarioLogado.getId());
                         } else {
-                            messages.add(new Message("Senha inválida!", Message.TYPE_ERROR));
+                            messages.add(new Message("Senha Antiga inválida!", Message.TYPE_ERROR));
+
+                            request.setAttribute("usuario", usuarioLogado);
+                            request.setAttribute("messages", messages);
+
+                            dispatcher = request.getRequestDispatcher("usuarioAlterarSenha.jsp");
+                            dispatcher.forward(request, response);
+                        }
+                        break;
+                    case "login":
+                        usuario = daoUsuario.getByLogin(request.getParameter("usuario"));
+
+                        if (usuario != null) {
+                            if (usuario.getSenha().equals(Util.criptografarSenha(request.getParameter("senha")))) {
+                                session.setAttribute("usuario", usuario);
+
+                                response.sendRedirect("Usuario?op=view&recover=true&idUsuario=" + usuario.getId());
+                            } else {
+                                messages.add(new Message("Senha inválida!", Message.TYPE_ERROR));
+
+                                request.setAttribute("messages", messages);
+                                dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
+                                dispatcher.forward(request, response);
+                            }
+                        } else {
+                            messages.add(new Message("Login inválido!", Message.TYPE_ERROR));
 
                             request.setAttribute("messages", messages);
                             dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
                             dispatcher.forward(request, response);
                         }
-                    } else {
-                        messages.add(new Message("Login inválido!", Message.TYPE_ERROR));
+                        break;
+                    case "recuperarSenha":
+                        usuario = daoUsuario.getByEmail(request.getParameter("email"));
 
-                        request.setAttribute("messages", messages);
-                        dispatcher = request.getRequestDispatcher("usuarioLogin.jsp");
-                        dispatcher.forward(request, response);
-                    }
-                    break;
-                case "recuperarSenha":
-                    usuario = daoUsuario.getByEmail(request.getParameter("email"));
+                        if (usuario != null) {
+                            String senha = Util.geraSenhaAleatoria();
+                            usuario.setSenha(Util.criptografarSenha(senha));
 
-                    if (usuario != null) {
-                        String senha = Util.geraSenhaAleatoria();
-                        usuario.setSenha(Util.criptografarSenha(senha));
+                            daoUsuario.update(usuario);
 
-                        daoUsuario.update(usuario);
+                            String email = usuario.getEmail();
+                            try {
+                                Email.sendEmail(email, "Alteração Senha sistema Columbus",
+                                        "Olá " + usuario.getNome() + "\n\n"
+                                        + "Sua senha foi alterada para: " + senha + "\n"
+                                        + "Recomendamos que você altere sua senha!\n\n"
+                                        + "Atenciosamente,\nColumbus");
+                            } catch (Exception ex) {
+                                response.sendError(404);
+                            }
 
-                        String email = usuario.getEmail();
-                        try {
-                            Email.sendEmail(email, "Alteração Senha sistema Columbus",
-                                    "Olá " + usuario.getNome() + "\n\n"
-                                    + "Sua senha foi alterada para: " + senha + "\n"
-                                    + "Recomendamos que você altere sua senha!\n\n"
-                                    + "Atenciosamente,\nColumbus");
-                        } catch (Exception ex) {
-                            response.sendError(404);
+                            response.sendRedirect("Usuario?op=login");
+                        } else {
+                            messages.add(new Message("Email inválido!", Message.TYPE_ERROR));
+
+                            request.setAttribute("messages", messages);
+                            dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
+                            dispatcher.forward(request, response);
                         }
-
-                        response.sendRedirect("Usuario?op=login");
-                    } else {
-                        messages.add(new Message("Email inválido!", Message.TYPE_ERROR));
-
-                        request.setAttribute("messages", messages);
-                        dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
-                        dispatcher.forward(request, response);
-                    }
-                    break;
-                default:
-                    response.sendError(404);
+                        break;
+                    default:
+                        response.sendError(404);
+                }
             }
+        } catch (NumberFormatException ne) {
+            response.sendError(404);
+        } catch (NullPointerException np) {
+            response.sendError(404);
+        } catch (Exception ex) {
+            response.sendError(404);
         }
     }
 

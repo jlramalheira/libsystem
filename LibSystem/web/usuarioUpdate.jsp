@@ -11,8 +11,9 @@
 <%@page import="model.Perfil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%  List<Perfil> perfis = new DaoPerfil().list();
-    Usuario usuario = (Usuario) request.getAttribute("usuario");
-    if (usuario == null) {
+    Usuario usuarioUpdate = (Usuario) request.getAttribute("usuario");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    if (usuarioUpdate == null) {
         response.sendError(404);
     }
 %>
@@ -30,7 +31,8 @@
                 <h1>Atualizar usuário</h1>
                 <%@include file="interfaceMessages.jsp" %>
                 <form method="post" action="Usuario" role="form">
-                    <input type="hidden" name="idUsuario" value="<%=usuario.getId()%>" />
+                    <input type="hidden" name="idUsuario" value="<%=usuarioUpdate.getId()%>" />
+                            <%if (usuario.getPerfil().hasAcessoUsuario()){ %>
                     <fieldset>
                         <legend>Informações do sistema</legend>
 
@@ -40,19 +42,20 @@
                                 <select name="perfil"
                                         id="perfil" class="form-control">
                                     <%for (Perfil perfil : perfis) {%>
-                                    <option value="<%=perfil.getId()%>" <%=usuario.getPerfil().getId() == perfil.getId()? "selected=\"selected\"" : "" %>><%=perfil.getNome()%></option>
+                                    <option value="<%=perfil.getId()%>" <%=usuarioUpdate.getPerfil().getId() == perfil.getId()? "selected=\"selected\"" : "" %>><%=perfil.getNome()%></option>
                                     <% }%>
                                 </select>
                             </div>
                         </div>
                     </fieldset>
+                                <%}%>
 
                     <fieldset>
                         <legend>Informações pessoais</legend>
                         <div class="row">
                             <div class="form-group col-lg-8">
                                 <label for="nome">Nome</label>
-                                <input type="text" name="nome" value="<%=usuario.getNome()%>"
+                                <input type="text" name="nome" value="<%=usuarioUpdate.getNome()%>"
                                        id="nome" class="form-control"
                                        placeholder="Seu nome completo"/>
                             </div>
@@ -61,7 +64,7 @@
                         <div class="row">
                             <div class="form-group col-lg-5">
                                 <label for="email">E-mail</label>
-                                <input type="email" name="email" value="<%=usuario.getEmail()%>"
+                                <input type="email" name="email" value="<%=usuarioUpdate.getEmail()%>"
                                        id="email" class="form-control"
                                        placeholder="E-mail para recuperação de senha"/>
                             </div>
