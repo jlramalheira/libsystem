@@ -4,6 +4,7 @@
  */
 package controle;
 
+import dao.DaoDebito;
 import dao.DaoPerfil;
 import dao.DaoUsuario;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
+import model.Debito;
 import util.Message;
 import util.Util;
 
@@ -99,6 +101,8 @@ public class ServletUsuario extends HttpServlet {
                             messages.add(new Message("Usuário editado com sucesso!", Message.TYPE_SUCCESS));
                         } else if (request.getParameter("senha") != null) {
                             messages.add(new Message("Senha alterada com sucesso!", Message.TYPE_SUCCESS));
+                        } else if (request.getParameter("debito") != null) {
+                            messages.add(new Message("Debitos recebidos com sucesso!", Message.TYPE_SUCCESS));
                         }
 
                         request.setAttribute("messages", messages);
@@ -150,6 +154,23 @@ public class ServletUsuario extends HttpServlet {
                     session.invalidate();
                     dispatcher = request.getRequestDispatcher("index.jsp");
                     dispatcher.forward(request, response);
+                case "receberDebitos":
+                    idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                    usuario = daoUsuario.get(idUsuario);
+
+                    if (usuario == null || usuarioLogado == null) {
+                        response.sendError(404);
+                    } else {
+                        List<Debito> debitos = new DaoDebito().listByUsuario(usuario);
+                        
+                        request.setAttribute("usuario", usuario);
+                        request.setAttribute("debitos", debitos);
+                        
+                        dispatcher = request.getRequestDispatcher("usuarioReceberDebitos.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                    break;
                 default:
                     response.sendError(404);
             }
@@ -354,6 +375,25 @@ public class ServletUsuario extends HttpServlet {
                             request.setAttribute("messages", messages);
                             dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
                             dispatcher.forward(request, response);
+                        }
+                        break;
+                    case "receberDebitos":
+                        idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                        usuario = daoUsuario.get(idUsuario);
+
+                        if (usuario == null || usuarioLogado == null || !usuarioLogado.getPerfil().hasAcessoEmprestimo()) {
+                            response.sendError(404);
+                        } else {
+                            DaoDebito daoDebito = new DaoDebito();
+                            List<Debito> debitos = daoDebito.listByUsuario(usuario);
+                            
+                            for (Debito debito: debitos){
+                                debito.setValor(0);
+                                daoDebito.update(debito);
+                            }
+                            
+                            response.sendRedirect("Usuario?op=view&debito=true&idUsuario="+usuario.getId());
                         }
                         break;
                     default:
