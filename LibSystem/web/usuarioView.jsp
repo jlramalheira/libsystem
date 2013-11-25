@@ -53,7 +53,13 @@
                         <a href="Usuario?op=alterarSenha&idUsuario=<%=usuarioView.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Alterar senha
-                        </a>  
+                        </a> 
+                        <%if (usuario.getValorDebitos() > 0) {%>
+                        <a href="Usuario?op=pagarDebitos&idUsuario=<%=usuarioView.getId()%>" 
+                           class="btn btn-default btn-block btn-lg">
+                            Pagar debitos
+                        </a> 
+                        <% }%>
                     </div>
                 </div>
 
