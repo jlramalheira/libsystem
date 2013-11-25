@@ -100,6 +100,7 @@ if (obras == null || usuario == null){
                             <th>Autor</th>
                             <th>Categoria</th>
                             <th>Exemplares</th>
+                            <th>Numero Emprestimos</th>
                     </thead>
                     <tbody>
                         <%for (Obra obra : obras){ %>
@@ -109,12 +110,13 @@ if (obras == null || usuario == null){
                             <td><%=obra.getAutor()%></td>
                             <td><%=obra.getCategoria().valor()%></td>
                             <td><%=obra.getNumeroExemplares()%></td>
+                            <td><%=obra.getNumeroEmprestimos()%></td>
                         </tr>
                         <%}%>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5"><%=obras.size() == 1 ? "1 resultado encontrado" : obras.size() + " resultados encontrados"%></th>
+                            <th colspan="6"><%=obras.size() == 1 ? "1 resultado encontrado" : obras.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>

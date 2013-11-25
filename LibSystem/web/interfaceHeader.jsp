@@ -24,7 +24,7 @@
                 <li><a href="Emprestimo?op=list">Empréstimos</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="Usuario?op=view&id=#"><span class="glyphicon glyphicon-user"></span> <%=usuario.getNome()%></a></li>
+                <li><a href="Usuario?op=view&idUsuario=<%=usuario.getId()%>"><span class="glyphicon glyphicon-user"></span> <%=usuario.getNome()%></a></li>
                 <li><a href="Usuario?op=loggout">Sair</a></li>
             </ul>
             <%} else {%>

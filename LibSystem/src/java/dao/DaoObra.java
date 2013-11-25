@@ -54,4 +54,12 @@ public class DaoObra extends Dao<Obra> {
         criteria = newCriteria();
         return criteria.orderByAsc("categoria").getResultList();
     }
+    
+    public int getNumeroEmprestimos(Obra obra){
+        List<Long> numeros = em.createNativeQuery("SELECT COUNT(e.ID) FROM EMPRESTIMO e, OBRA o, EXEMPLAR ex WHERE e.EXEMPLAR_ID = ex.ID AND ex.OBRA_ID = o.id AND o.ID = "+obra.getId()).getResultList();
+        if (numeros != null && numeros.get(0) != null){
+            return Integer.parseInt(numeros.get(0) + "");
+        }
+        return 0;
+    }
 }

@@ -5,7 +5,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -85,8 +87,11 @@ public class Reserva implements Serializable {
         return diaDisponivel;
     }
 
-    public void setDiaDisponivel(Date diaDisponivel) {
-        this.diaDisponivel = diaDisponivel;
+    public void setDiaDisponivel(int dias) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(Calendar.getInstance().getTime());
+        calendar.add(Calendar.DAY_OF_MONTH, dias);
+        this.diaDisponivel = calendar.getTime();
     }
 
     @Override

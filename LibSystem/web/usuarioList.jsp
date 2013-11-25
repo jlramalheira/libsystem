@@ -76,6 +76,7 @@
                             <th class="">#</th>
                             <th>Nome</th>
                             <th>E-mail</th>
+                            <th>Debitos</th>
                     </thead>
                     <tbody>
                         <%for (Usuario u : usuarios){ %>
@@ -83,12 +84,13 @@
                             <td><%=u.getId()%></td>
                             <td><%=u.getNome()%></td>
                             <td><%=u.getEmail()%></td>
+                            <td><%=u.getValorDebitos()%></td>
                         </tr>
                         <% }%>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3"><%=usuarios.size() == 1 ? "1 resultado encontrado" : usuarios.size() + " resultados encontrados"%></th>
+                            <th colspan="4"><%=usuarios.size() == 1 ? "1 resultado encontrado" : usuarios.size() + " resultados encontrados"%></th>
                         </tr>
                     </tfoot>
                 </table>

@@ -85,7 +85,7 @@ public class ServletDevolucao extends HttpServlet {
                         Reserva reserva = new DaoReserva().getFirstReserva(emprestimo.getExemplar().getObra());
                         if (reserva !=  null){
                             reserva.setStatus(Reserva.DISPONIVEL);
-                            reserva.setDiaDisponivel(hoje);
+                            reserva.setDiaDisponivel(reserva.getUsuario().getPerfil().getDiasReserva());
                            new DaoReserva().update(reserva);
                         }
                         

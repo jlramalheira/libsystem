@@ -5,8 +5,10 @@
     Description:
 --%>
 
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    List<Usuario> usuarios = (List<Usuario>) request.getAttribute("usuarios");
     Usuario usuario = (Usuario) session.getAttribute("usuario");
     if (usuario == null) {
         response.sendError(404);
@@ -61,10 +63,10 @@
                             <div class="form-group col-lg-10">
                                 <label for="usuario">Usuário</label>
                                 <select data-type="selectsearch" class="form-control" name="usuario">
-                                    <option value="id">Nome</option>
-                                    <option value="id">Nome</option>
-                                    <option value="id">Nome</option>
-                                    <option value="id">Nome</option>
+                                    <option value=""></option>
+                                    <% for (Usuario u : usuarios){%>
+                                        <option value="<%=u.getId()%>"><%=u.getNome()%></option>
+                                    <%}%>
                                 </select>
                             </div>
                         </div>

@@ -172,7 +172,7 @@ public class ServletReserva extends HttpServlet {
                             if (reservas.isEmpty()) {
                                 if (obra.getCategoria().emprestavel()) {
                                     reserva.setObra(obra);
-                                    reserva.setUsuario(null);
+                                    reserva.setUsuario(usuario);
                                     reserva.setStatus(Reserva.AGUARDANDO);
                                     reserva.setDiaReserva(Calendar.getInstance().getTime());
 

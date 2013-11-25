@@ -5,6 +5,7 @@
 package model;
 
 import dao.DaoExemplar;
+import dao.DaoObra;
 import dao.DaoReserva;
 import java.io.Serializable;
 import java.util.List;
@@ -118,6 +119,10 @@ public class Obra implements Serializable {
     public boolean hasEmprestado(){
         List<Exemplar> exemplares = new DaoExemplar().listByObraAndStatus(this,Exemplar.EMPRESTADO);
         return !exemplares.isEmpty();
+    }
+    
+    public int getNumeroEmprestimos(){
+        return new DaoObra().getNumeroEmprestimos(this);
     }
 
     @Override

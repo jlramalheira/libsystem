@@ -16,7 +16,7 @@ import model.Usuario;
 public class InitDB {
     public static void main(String[] args) {
         Perfil perfil = new Perfil();
-        perfil.setNome("Perfil Administrador");
+        perfil.setNome("Administrador");
         perfil.setDiasReserva(10);
         perfil.setQuantidadeReservas(5);
         perfil.setDiasEmprestimo(10);

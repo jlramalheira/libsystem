@@ -66,7 +66,7 @@ public class DaoUsuario extends Dao<Usuario> {
     public double getTotalDebito(Usuario usuario){
         List valores = em.createNativeQuery("Select SUM(d.VALOR) FROM DEBITO d, USUARIO u, EMPRESTIMO e, DEVOLUCAO de "
                 + "WHERE u.ID = "+usuario.getId()+" AND u.ID = e.USUARIO_ID AND de.ID = e.DEVOLUCAO_ID AND d.ID = de.DEBITO_ID").getResultList();
-        if (!valores.isEmpty()){
+        if ((!valores.isEmpty()) && (valores.get(0) != null)){
             return (double) valores.get(0);
         }
         return 0;
