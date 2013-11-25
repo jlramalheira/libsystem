@@ -167,7 +167,7 @@ public class ServletUsuario extends HttpServlet {
                         request.setAttribute("usuario", usuario);
                         request.setAttribute("debitos", debitos);
                         
-                        dispatcher = request.getRequestDispatcher("usuarioReceberDebitos.jsp");
+                        dispatcher = request.getRequestDispatcher("usuarioReceberDebito.jsp");
                         dispatcher.forward(request, response);
                     }
                     break;
