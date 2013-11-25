@@ -40,6 +40,13 @@ public class DaoUsuario extends Dao<Usuario> {
                 .andStringLike("email", email)
                 .getResultList();
     }
+    
+    public List<Usuario> listByPerfil(Perfil perfil) {
+        criteria = newCriteria();
+        return criteria
+                .andEquals("perfil", perfil)
+                .getResultList();
+    }
 
     public Usuario getByLogin(String login) {
         criteria = newCriteria();
