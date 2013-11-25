@@ -20,7 +20,7 @@ public class DaoDebito extends Dao<Debito>{
     
     public List<Debito> listByUsuario(Usuario usuario){
         return em.createQuery("SELECT d FROM Debito d, Usuario u, Emprestimo e, Devolucao de "
-                + "WHERE u.id = e.usuario.id AND de.id = d.debito.id AND e.devolucao.id = de.id AND u.id = "+usuario.getId()).getResultList();
+                + "WHERE u.id = e.usuario.id AND de.debito.id = d.id AND e.devolucao.id = de.id AND u.id = "+usuario.getId()).getResultList();
     }
     
 }
