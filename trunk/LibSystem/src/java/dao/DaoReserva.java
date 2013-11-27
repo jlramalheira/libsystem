@@ -62,6 +62,8 @@ public class DaoReserva extends Dao<Reserva> {
         criteria = newCriteria();
         return criteria
                 .andEquals("obra", obra)
+                .orEquals("status", 1)
+                .orEquals("status", 3)
                 .getResultList()
                 .size();
     }
