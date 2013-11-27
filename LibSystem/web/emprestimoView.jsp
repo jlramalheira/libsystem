@@ -9,7 +9,7 @@
 <%@page import="model.Emprestimo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%Emprestimo emprestimo = (Emprestimo) request.getAttribute("emprestimo");
- Usuario usuario = (Usuario) session.getAttribute("usuario");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
     if (emprestimo == null || usuario == null) {
         response.sendError(404);
     }
@@ -85,7 +85,9 @@
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                        <%if (emprestimo.getDevolucao().getStatus() != Devolucao.DEVOLVIDO) {%>
+                        <%
+                            if (usuario.getPerfil().hasAcessoEmprestimo()) {
+                                if (emprestimo.getDevolucao().getStatus() != Devolucao.DEVOLVIDO) {%>
                         <a href="Devolucao?op=create&idEmprestimo=<%=emprestimo.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
                             Realizar devolução
@@ -95,7 +97,8 @@
                            class="btn btn-default btn-block btn-lg">
                             Renovar empréstimo
                         </a>
-                        <%}%>
+                        <%}
+                            }%>
                     </div>
                 </div>
 
