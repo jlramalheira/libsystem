@@ -45,7 +45,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <%if (usuario.getId().equals(usuarioView.getId())) {%>
+                    <%
+                        if (usuario.getId().equals(usuarioView.getId())) {%>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a href="Usuario?op=update&idUsuario=<%=usuarioView.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
@@ -54,8 +55,14 @@
                         <a href="Usuario?op=alterarSenha&idUsuario=<%=usuarioView.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
                             Alterar senha
+                        </a>
+                        <%if (usuario.getPerfil().hasAcessoUsuario()) {%>
+                        <a href="Usuario?op=delete&idUsuario=<%=usuarioView.getId()%>" 
+                           class="btn btn-danger btn-block btn-lg">
+                            Alterar senha
                         </a> 
-                        <% }%>
+                        <%}
+                            }%>
                         <%if ((usuarioView.getValorDebitos() > 0) && (usuario.getPerfil().hasAcessoEmprestimo())) {%>
                         <a href="Usuario?op=receberDebitos&idUsuario=<%=usuarioView.getId()%>" 
                            class="btn btn-default btn-block btn-lg">
@@ -64,9 +71,6 @@
                         <%}%>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
 

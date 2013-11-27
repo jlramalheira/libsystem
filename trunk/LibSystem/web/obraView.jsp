@@ -66,6 +66,7 @@
                         </table>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <%if (usuario.getPerfil().hasAcessoObra()) {%>
                         <a href="Obra?op=update&idObra=<%=obra.getId()%>" 
                            class="btn btn-primary btn-block btn-lg">
                             Editar obra
@@ -74,6 +75,7 @@
                            class="btn btn-danger btn-block btn-lg">
                             Excluir obra
                         </a> 
+                        <%}%>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                         <h2>Exemplares</h2>

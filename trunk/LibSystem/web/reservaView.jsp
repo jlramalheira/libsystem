@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Reserva reserva = (Reserva) request.getAttribute("reserva");
-     Usuario usuario = (Usuario) session.getAttribute("usuario");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
     if (reserva == null || usuario == null) {
         response.sendError(404);
     }
@@ -56,12 +56,12 @@
                                         <%}%>
                                     </td>
                                 </tr>
-                                <%if (reserva.getStatus() == Reserva.DISPONIVEL){ %>
+                                <%if (reserva.getStatus() == Reserva.DISPONIVEL) {%>
                                 <tr>
                                     <th>Expira em</th>
                                     <td><%=FormatDate.dateToString(reserva.getDiaDisponivel())%></td>
                                 </tr>
-                                <%} else if(reserva.getStatus() == Reserva.EXPIRADA){%>
+                                <%} else if (reserva.getStatus() == Reserva.EXPIRADA) {%>
                                 <tr>
                                     <th>Expirada em</th>
                                     <td><%=FormatDate.dateToString(reserva.getDiaDisponivel())%></td>
@@ -70,14 +70,16 @@
                             </tbody>
                         </table>
                     </div>
-                    <%if (reserva.getStatus() == Reserva.AGUARDANDO || reserva.getStatus() == Reserva.DISPONIVEL) {%>
+                                <% if ((usuario.getPerfil().hasAcessoReserva()) && (usuario.getId().equals(reserva.getUsuario().getId()))) {
+                            if (reserva.getStatus() == Reserva.AGUARDANDO || reserva.getStatus() == Reserva.DISPONIVEL) {%>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <a href="Reserva?op=cancelar&idReserva=<%=reserva.getId()%>" 
                            class="btn btn-danger btn-block btn-lg">
                             Cancelar reserva
                         </a>                  
                     </div>
-                    <%}%>
+                    <%}
+                        }%>
                 </div>
             </div>
         </div>

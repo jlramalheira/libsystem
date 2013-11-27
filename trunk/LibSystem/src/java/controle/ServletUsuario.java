@@ -5,7 +5,9 @@
 package controle;
 
 import dao.DaoDebito;
+import dao.DaoEmprestimo;
 import dao.DaoPerfil;
+import dao.DaoReserva;
 import dao.DaoUsuario;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import model.Debito;
+import model.Emprestimo;
+import model.Reserva;
 import util.Message;
 import util.Util;
 
@@ -134,6 +138,11 @@ public class ServletUsuario extends HttpServlet {
 
                     request.setAttribute("usuarios", usuarios);
 
+                    if (request.getParameter("new") != null) {
+                        messages.add(new Message("Usuário deletado com sucesso!", Message.TYPE_SUCCESS));
+                        request.setAttribute("messages", messages);
+                    }
+
                     dispatcher = request.getRequestDispatcher("usuarioList.jsp");
                     dispatcher.forward(request, response);
                     break;
@@ -163,10 +172,10 @@ public class ServletUsuario extends HttpServlet {
                         response.sendError(404);
                     } else {
                         List<Debito> debitos = new DaoDebito().listByUsuario(usuario);
-                        
+
                         request.setAttribute("usuario", usuario);
                         request.setAttribute("debitos", debitos);
-                        
+
                         dispatcher = request.getRequestDispatcher("usuarioReceberDebito.jsp");
                         dispatcher.forward(request, response);
                     }
@@ -387,15 +396,49 @@ public class ServletUsuario extends HttpServlet {
                         } else {
                             DaoDebito daoDebito = new DaoDebito();
                             List<Debito> debitos = daoDebito.listByUsuario(usuario);
-                            
-                            for (Debito debito: debitos){
+
+                            for (Debito debito : debitos) {
                                 debito.setValor(0);
                                 daoDebito.update(debito);
                             }
-                            
-                            response.sendRedirect("Usuario?op=view&debito=true&idUsuario="+usuario.getId());
+
+                            response.sendRedirect("Usuario?op=view&debito=true&idUsuario=" + usuario.getId());
                         }
                         break;
+                    case "delete":
+                        idUsuario = Long.parseLong(request.getParameter("idUsuario"));
+
+                        usuario = daoUsuario.get(idUsuario);
+
+                        if (usuario == null) {
+                            response.sendError(404);
+                        } else {
+                            List<Reserva> reservas = new DaoReserva().listByUsuario(usuario);
+                            if (reservas.isEmpty()) {
+                                List<Emprestimo> emprestimos = new DaoEmprestimo().listByUsuario(usuario);
+                                if (emprestimos.isEmpty()) {
+                                    daoUsuario.remove(idUsuario);
+
+                                    response.sendRedirect("Usuario?op=list&delete=true");
+                                } else {
+                                    messages.add(new Message("Impossível excluir pois o usuário possui emprestimos!", Message.TYPE_ERROR));
+
+                                    request.setAttribute("messages", messages);
+                                    request.setAttribute("usuario", usuario);
+
+                                    dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
+                                    dispatcher.forward(request, response);
+                                }
+                            } else {
+                                messages.add(new Message("Impossível excluir pois o usuário possui reservas!", Message.TYPE_ERROR));
+
+                                request.setAttribute("messages", messages);
+                                request.setAttribute("usuario", usuario);
+
+                                dispatcher = request.getRequestDispatcher("usuarioRecuperarSenha.jsp");
+                                dispatcher.forward(request, response);
+                            }
+                        }
                     default:
                         response.sendError(404);
                 }
