@@ -225,7 +225,7 @@ public class ServletEmprestimo extends HttpServlet {
                                 if (exemplar.getObra().getNumeroReservas() <= exemplar.getObra().getNumeroExemplares(Exemplar.DISPONIVEL)) {
                                     Reserva reserva = new DaoReserva().getByUsuarioObra(usuario, exemplar.getObra());
                                     //nao acha reserva ou se acha, a reserva eh a do usuario
-                                    if (((reserva == null) && (exemplar.getObra().getNumeroReservas() < exemplar.getObra().getNumeroExemplares(Exemplar.DISPONIVEL)))
+                                    if (((reserva == null) && (exemplar.getObra().getNumeroReservas() <= exemplar.getObra().getNumeroExemplares(Exemplar.DISPONIVEL)))
                                             || (reserva != null && reserva.getUsuario().getId() == usuario.getId())) {
                                         if (usuario.canEmprestar()) {
                                             if (usuario.getValorDebitos() <= 0) {
