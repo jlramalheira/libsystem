@@ -4,16 +4,18 @@
     Author     : max
     Description:
 --%>
+<%@page import="java.util.List"%>
 <%@page import="model.Categoria"%>
 <%@page import="model.Exemplar"%>
 <%@page import="model.Obra"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-Obra obra = (Obra) request.getAttribute("obra");
- Usuario usuario = (Usuario) session.getAttribute("usuario");
-if (obra == null || usuario == null){
-    response.sendError(404);
-}
+<%
+    Obra obra = (Obra) request.getAttribute("obra");
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
+    List<Exemplar> exemplares = (List<Exemplar>) request.getAttribute("exemplares");
+    if (obra == null || usuario == null || exemplares == null) {
+        response.sendError(404);
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -72,6 +74,24 @@ if (obra == null || usuario == null){
                            class="btn btn-danger btn-block btn-lg">
                             Excluir obra
                         </a> 
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        <h2>Exemplares</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Titulo</th>
+                            </thead>
+                            <tbody>
+                                <%for (Exemplar exemplar : exemplares) {%>
+                                <tr>
+                                    <td><%=exemplar.getId()%></td>
+                                    <td><%=exemplar.getStatus() == Exemplar.DISPONIVEL ? "<span class=\"label label-success\">Disponível</span>" : "<span class=\"label label-info\">Emprestado</span>"%></td>
+                                </tr>
+                                <%}%>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 

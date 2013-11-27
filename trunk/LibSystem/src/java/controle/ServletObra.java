@@ -109,6 +109,7 @@ public class ServletObra extends HttpServlet {
                         if (obra == null) {
                             response.sendError(404);
                         } else {
+                            List<Exemplar> exemplares = new DaoExemplar().listByObra(obra);
                             if (request.getParameter("new") != null) {
                                 messages.add(new Message("Obra cadastrada com sucesso!", Message.TYPE_SUCCESS));
                             } else if (request.getParameter("update") != null) {
@@ -117,6 +118,7 @@ public class ServletObra extends HttpServlet {
 
                             request.setAttribute("obra", obra);
                             request.setAttribute("messages", messages);
+                            request.setAttribute("exemplares", exemplares);
 
                             dispatcher = request.getRequestDispatcher("obraView.jsp");
                             dispatcher.forward(request, response);
@@ -232,7 +234,7 @@ public class ServletObra extends HttpServlet {
 
                             int numeroExemplaresUpdate = Integer.parseInt(request.getParameter("exemplares"));
 
-                            if (numeroExemplaresUpdate <= obra.getNumeroExemplares(Exemplar.EMPRESTADO)) {
+                            if (numeroExemplaresUpdate < obra.getNumeroExemplares(Exemplar.EMPRESTADO)) {
                                 messages.add(new Message("Impossível excluir exemplares emprestados!", Message.TYPE_ERROR));
 
                                 request.setAttribute("messages", messages);
@@ -242,7 +244,7 @@ public class ServletObra extends HttpServlet {
                                 dispatcher.forward(request, response);
                             } else {
                                 if (numeroExemplaresUpdate > obra.getNumeroExemplares()) {
-                                    for (int i = 0; i <= (numeroExemplaresUpdate - obra.getNumeroExemplares() + 1); i++) {
+                                    for (int i = 0; i <= (numeroExemplaresUpdate - obra.getNumeroExemplares()); i++) {
                                         exemplar = new Exemplar();
                                         exemplar.setObra(obra);
                                         exemplar.setStatus(Exemplar.DISPONIVEL);
